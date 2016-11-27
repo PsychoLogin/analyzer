@@ -5,22 +5,52 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
+        <nd4j.backend>nd4j-native-platform</nd4j.backend>
         <nd4j.version>0.7.0</nd4j.version>
         <dl4j.version>0.7.0</dl4j.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <groupId>ch.bfh.projekt1</groupId>
     <artifactId>psylogin-analyzer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependency>
-        <groupId>org.nd4j</groupId>
-        <artifactId>${nd4j.backend}</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.deeplearning4j</groupId>
-        <artifactId>deeplearning4j-core</artifactId>
-        <version>${dl4j.version}</version>
-    </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-native-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-cuda-7.5-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-cuda-8.0-platform</artifactId>
+                <version>${nd4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.nd4j</groupId>
+            <artifactId>${nd4j.backend}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-core</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
