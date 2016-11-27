@@ -16,10 +16,10 @@ public class Dl4jLoginAnalyzerTest {
     private final ITrainableAnalyzer analyzer = new Dl4jLoginAnalyzer();
 
     @Test
-    public void testAlarm() {
+    public void testAlarm() throws Exception {
         List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 1);
         analyzer.train(trainingData);
-        Assert.assertTrue(analyzer.analyze(LoginDataSetGenerator.generateLogin(501)));
-        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(3)));
+        Assert.assertTrue(analyzer.analyze(LoginDataSetGenerator.generateLogin(500)));
+        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(1)));
     }
 }
