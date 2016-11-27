@@ -34,7 +34,7 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
     private static final int NUM_CATEGORIES = 2;
     private MultiLayerNetwork network;
 
-    public void train(final String csvFilePath, final int size, final int numTimestamps) throws TrainingException {
+    private void train(final String csvFilePath, final int size, final int numTimestamps) throws TrainingException {
         final DataSet dataSet;
         try {
             dataSet = getCsvDataSet(csvFilePath, size, numTimestamps);

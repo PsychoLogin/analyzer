@@ -32,7 +32,7 @@ public class CsvConverter {
     public <T> CsvConverter output(final TrainingEntry<T> entry, final Consumer<T> printer) {
         printer.accept(entry.getEntity());
         content.append(SEPARATOR);
-        content.append(entry.isResult() ? '1' : '0');
+        content.append(entry.isResult() ? 1 : 0);
         content.append(System.lineSeparator());
         return this;
     }
