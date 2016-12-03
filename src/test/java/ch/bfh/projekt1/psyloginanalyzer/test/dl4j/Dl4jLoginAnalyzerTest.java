@@ -5,6 +5,7 @@ import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import ch.bfh.projekt1.psyloginanalyzer.login.ITrainableAnalyzer;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class Dl4jLoginAnalyzerTest {
     private final ITrainableAnalyzer analyzer = new Dl4jLoginAnalyzer();
 
+    @Ignore
     @Test
     public void testAlarm() throws Exception {
         List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 1);

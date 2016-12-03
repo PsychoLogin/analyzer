@@ -34,6 +34,14 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
     private static final int NUM_CATEGORIES = 2;
     private MultiLayerNetwork network;
 
+    private static DataSet getCsvDataSet(final String csvFilePath, final int size, final int numTimestamps) throws IOException, InterruptedException {
+        final RecordReader recordReader = new CSVRecordReader();
+        recordReader.initialize(new FileSplit(new File(csvFilePath)));
+        final int numTimestampsDifferences = numTimestamps - 1;
+        final DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(recordReader, size, numTimestampsDifferences, NUM_CATEGORIES);
+        return dataSetIterator.next();
+    }
+
     private void train(final String csvFilePath, final int size, final int numTimestamps) throws TrainingException {
         final DataSet dataSet;
         try {
@@ -53,26 +61,23 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
                 .learningRate(0.1)
                 .regularization(true).l2(1e-4)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(numTimestamps - 1).nOut(9)
+                .layer(0, new DenseLayer.Builder()
+                        .nIn(numTimestamps - 1)
+                        .nOut(9)
                         .build())
-                .layer(1, new DenseLayer.Builder().nIn(9).nOut(9)
+                .layer(1, new DenseLayer.Builder()
+                        .nIn(9)
+                        .nOut(9)
                         .build())
                 .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         .activation("softmax")
-                        .nIn(9).nOut(NUM_CATEGORIES).build())
+                        .nIn(9)
+                        .nOut(NUM_CATEGORIES).build())
                 .backprop(true).pretrain(false)
                 .build();
         network = new MultiLayerNetwork(configuration);
         network.init();
         network.fit(dataSet);
-    }
-
-    private static DataSet getCsvDataSet(final String csvFilePath, final int size, final int numTimestamps) throws IOException, InterruptedException {
-        final RecordReader recordReader = new CSVRecordReader();
-        recordReader.initialize(new FileSplit(new File(csvFilePath)));
-        final int numTimestampsDifferences = numTimestamps - 1;
-        final DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(recordReader, size, numTimestampsDifferences, NUM_CATEGORIES);
-        return dataSetIterator.next();
     }
 
     public boolean analyze(final Login login) throws AnalysisException {
@@ -91,7 +96,7 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
             throw new AnalysisException(e);
         }
         final INDArray output = network.output(testDataSet.getFeatureMatrix());
-        return output.getDouble(0 ) > output.getDouble(1);
+        return output.getDouble(0) > output.getDouble(1);
     }
 
     public void train(Collection<TrainingEntry<Login>> trainingDataSet) throws TrainingException {
