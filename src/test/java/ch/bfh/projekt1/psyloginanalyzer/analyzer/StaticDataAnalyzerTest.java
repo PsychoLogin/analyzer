@@ -33,8 +33,8 @@ public class StaticDataAnalyzerTest {
     @Test
     public void userIsAllowedToLogin() {
         UserBehavior userBehavior = new UserBehavior();
-        userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 100));
-        userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
+        userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("Chrome", 100), 100));
+        userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("de", 100), 100));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
         Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
