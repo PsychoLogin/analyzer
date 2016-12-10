@@ -3,7 +3,6 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -19,13 +18,13 @@ import static org.mockito.Mockito.when;
 /**
  * Created by jan on 03.12.16.
  */
-public class UserAnalyserTest {
+public class UserBehaviorAnalyserTest {
 
-    UserAnalyser cut;
+    UserBehaviorAnalyser cut;
 
     @Before
     public void init() {
-        cut = new UserAnalyser();
+        cut = new UserBehaviorAnalyser();
         cut.em = mock(EntityManager.class);
 
         List<StaticSessionData> results = new ArrayList<>();
@@ -57,8 +56,8 @@ public class UserAnalyserTest {
 
     @Test
     public void getUserBehavior() {
-        UserBehavior user = cut.getUser("", "");
-        Assert.assertEquals("de", user.getPreferredLanguage());
-        Assert.assertEquals("IE", user.getPreferredBrowser());
+        UserBehavior user = cut.getUserBehavior("", "");
+        Assert.assertEquals(66, (int)user.getBrowserUsage().get("IE"));
+        Assert.assertEquals(100, (int)user.getLanguageUsage().get("de"));
     }
 }

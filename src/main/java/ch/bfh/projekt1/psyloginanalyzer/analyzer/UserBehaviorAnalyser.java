@@ -14,37 +14,33 @@ import java.util.function.Function;
 /**
  * Created by jan on 03.12.16.
  */
-public class UserAnalyser {
+public class UserBehaviorAnalyser {
 
     @PersistenceUnit
     @Inject
     EntityManager em;
 
-    public UserBehavior getUser(String userId, String currentDeviceType) {
+    public UserBehavior getUserBehavior(String userId, String currentDeviceType) {
         TypedQuery<StaticSessionData> query = em.createQuery("", StaticSessionData.class);
         List<StaticSessionData> resultList = query.getResultList();
         UserBehavior user = new UserBehavior();
-        user.setPreferredLanguage(getMostCommon(resultList, StaticSessionData::getLanguage));
-        user.setPreferredBrowser(getMostCommon(resultList, StaticSessionData::getBrowser));
+        user.setLanguageUsage(getUsageInPercent(resultList, StaticSessionData::getLanguage));
+        user.setBrowserUsage(getUsageInPercent(resultList, StaticSessionData::getBrowser));
         return user;
     }
 
 
-    private String getMostCommon(List<StaticSessionData> list, Function<StaticSessionData, String> function) {
+    private Map<String, Integer> getUsageInPercent(List<StaticSessionData> list, Function<StaticSessionData, String> function) {
         Map<String, Integer> elements = new HashMap<>();
         for (StaticSessionData result : list) {
             elements.put(function.apply(result), elements.getOrDefault(function.apply(result), 0) + 1);
         }
-        Map.Entry<String, Integer> maxEntry = null;
+
+        int collectedData = elements.values().stream().mapToInt(Integer::intValue).sum();
 
         for (Map.Entry<String, Integer> entry : elements.entrySet()) {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
+            entry.setValue((int)(100.0/collectedData*entry.getValue()));
         }
-        if ((maxEntry != null ? maxEntry.getKey() : null) == null) {
-            throw new RuntimeException("key was null");
-        }
-        return maxEntry.getKey();
+        return elements;
     }
 }

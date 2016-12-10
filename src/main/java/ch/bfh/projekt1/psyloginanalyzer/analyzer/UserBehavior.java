@@ -1,25 +1,27 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import java.util.Map;
+
 /**
  * Created by jan on 03.12.16.
  */
 public class UserBehavior {
-    private String preferredBrowser;
-    private String preferredLanguage;
+    private Map<String, Integer> browserUsage;
+    private Map<String, Integer> languageUsage;
 
-    public String getPreferredBrowser() {
-        return preferredBrowser;
+    public Map<String, Integer> getBrowserUsage() {
+        return browserUsage;
     }
 
-    public void setPreferredBrowser(String preferredBrowser) {
-        this.preferredBrowser = preferredBrowser;
+    public Map<String, Integer> getLanguageUsage() {
+        return languageUsage;
     }
 
-    public String getPreferredLanguage() {
-        return preferredLanguage;
+    public void setBrowserUsage(Map<String, Integer> browserUsage) {
+        this.browserUsage = browserUsage;
     }
 
-    public void setPreferredLanguage(String preferredLanguage) {
-        this.preferredLanguage = preferredLanguage;
+    public void setLanguageUsage(Map<String, Integer> languageUsage) {
+        this.languageUsage = languageUsage;
     }
 }

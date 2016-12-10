@@ -3,57 +3,37 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jan on 03.12.16.
  */
 public class StaticDataAnalyzer {
 
-
-    @PersistenceUnit
     @Inject
-    EntityManager em;
+    UserBehaviorAnalyser userBehaviorAnalyser;
 
-    private List<StaticSessionData> getExistingData() {
-        // TODO: get List from Database
-        List<StaticSessionData> staticSessionDatas = new ArrayList<>();
-        staticSessionDatas.add(new StaticSessionData.Builder()
-                .withOperatingSystem("Win10").build());
-        staticSessionDatas.add(new StaticSessionData.Builder()
-                .withOperatingSystem("Win10").build());
-        staticSessionDatas.add(new StaticSessionData.Builder()
-                .withOperatingSystem("Win10").build());
-        staticSessionDatas.add(new StaticSessionData.Builder()
-                .withOperatingSystem("Win10").build());
+    /**
+     * @param userId
+     * @param currentUserSession
+     * @return Naive implementation if a user is possibly not the actual User
+     * User analyse is invalid if there is less than 20% usage
+     */
 
-        return staticSessionDatas;
+    public boolean analyseUser(String userId, StaticSessionData currentUserSession) {
+
+        UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId, currentUserSession.getOperationSystem());
+        boolean validLogin = check(currentUserSession.getBrowser(), userBehavior.getBrowserUsage());
+        validLogin &= check(currentUserSession.getLanguage(), userBehavior.getLanguageUsage());
+        return validLogin;
     }
 
-    public boolean analyze(StaticSessionData staticSessionData) {
 
-        // Mobile oder PC => UserAnalyse PC
-        UserAnalyser userAnalyser = new UserAnalyser();
-        UserBehavior user = userAnalyser.getUser("stinrg", "sitnrg");
-
-
-        List<StaticSessionData> existingData = getExistingData();
-
-        int mismatchCounter = 0;
-
-        for (StaticSessionData existing : existingData) {
-            if (!staticSessionData.getOperationSystem().equals(existing.getOperationSystem())) {
-                mismatchCounter++;
-            }
-        }
-
-        double wrongRate = 100.0/existingData.size()*mismatchCounter;
-
-        return !(wrongRate > 10);
+    private boolean check(String currentlyUsed, Map<String, Integer> preferred) {
+        int usageOfCurrentBrowser = preferred.getOrDefault(currentlyUsed, 0);
+        return usageOfCurrentBrowser >= 20;
     }
+
 
 
 }
