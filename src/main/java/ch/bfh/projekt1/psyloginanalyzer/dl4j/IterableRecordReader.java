@@ -11,6 +11,7 @@ import org.datavec.api.writable.Writable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,11 +19,9 @@ import java.util.List;
  * @brief
  *
  * @details
- *
- * @param <T>
  */
 public class IterableRecordReader extends BaseRecordReader {
-    private final Iterator<IWritableConvertible> entities;
+    private final Iterator<? extends IWritableConvertible> entities;
 
     /**
      * @brief
@@ -31,7 +30,7 @@ public class IterableRecordReader extends BaseRecordReader {
      *
      * @param entities
      */
-    public IterableRecordReader(final Iterable<IWritableConvertible> entities) {
+    public IterableRecordReader(final Iterable<? extends IWritableConvertible> entities) {
         this.entities = entities.iterator();
     }
 
@@ -57,7 +56,7 @@ public class IterableRecordReader extends BaseRecordReader {
 
     @Override
     public List<String> getLabels() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     @Override

@@ -19,6 +19,6 @@ public class Dl4jLoginAnalyzerTest {
         List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 1);
         analyzer.train(trainingData);
         Assert.assertTrue(analyzer.analyze(LoginDataSetGenerator.generateLogin(500)));
-        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(1)));
+        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(50)));
     }
 }

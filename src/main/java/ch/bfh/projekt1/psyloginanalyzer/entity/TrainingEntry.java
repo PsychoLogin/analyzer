@@ -3,7 +3,6 @@ package ch.bfh.projekt1.psyloginanalyzer.entity;
 import org.datavec.api.writable.BooleanWritable;
 import org.datavec.api.writable.Writable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

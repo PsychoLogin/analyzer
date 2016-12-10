@@ -22,6 +22,12 @@ public class Login implements IWritableConvertible {
 
     @Override
     public List<Writable> toWritable() {
-        return keystrokeTimestamps.stream().map(d -> new LongWritable(d.getTime())).collect(Collectors.toList());
+        final LongWritable previous = new LongWritable(keystrokeTimestamps.stream().findFirst().orElse(new Date()).getTime());
+        return keystrokeTimestamps.stream().skip(1).map(d -> {
+            final long current = d.getTime();
+            final LongWritable result = new LongWritable(current - previous.get());
+            previous.set(current);
+            return result;
+        }).collect(Collectors.toList());
     }
 }
