@@ -1,11 +1,9 @@
-package ch.bfh.projekt1.psyloginanalyzer.test.dl4j;
+package ch.bfh.projekt1.psyloginanalyzer.dl4j;
 
-import ch.bfh.projekt1.psyloginanalyzer.dl4j.Dl4jLoginAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import ch.bfh.projekt1.psyloginanalyzer.login.ITrainableAnalyzer;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;

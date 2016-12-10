@@ -2,6 +2,7 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Created by jan on 03.12.16.
@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 public class UserAnalyser {
 
     @PersistenceUnit
+    @Inject
     EntityManager em;
 
     public UserBehavior getUser(String userId, String currentDeviceType) {
@@ -41,7 +42,7 @@ public class UserAnalyser {
                 maxEntry = entry;
             }
         }
-        if((maxEntry != null ? maxEntry.getKey() : null) == null) {
+        if ((maxEntry != null ? maxEntry.getKey() : null) == null) {
             throw new RuntimeException("key was null");
         }
         return maxEntry.getKey();

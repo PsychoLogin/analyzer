@@ -53,8 +53,6 @@ public class UserAnalyserTest {
         TypedQuery mockedQuery = mock(TypedQuery.class);
         when(mockedQuery.getResultList()).thenReturn(results);
         when(cut.em.createQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
-
-
     }
 
     @Test

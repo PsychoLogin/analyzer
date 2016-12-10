@@ -1,15 +1,12 @@
-package ch.bfh.projekt1.psyloginanalyzer.test.csv;
+package ch.bfh.projekt1.psyloginanalyzer.csv;
 
-import ch.bfh.projekt1.psyloginanalyzer.csv.CsvConverter;
 import ch.bfh.projekt1.psyloginanalyzer.dl4j.Dl4jLoginAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import ch.bfh.projekt1.psyloginanalyzer.login.ITrainableAnalyzer;
-import ch.bfh.projekt1.psyloginanalyzer.test.dl4j.LoginDataSetGenerator;
+import ch.bfh.projekt1.psyloginanalyzer.dl4j.LoginDataSetGenerator;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  * Created by othma on 27.11.2016.
