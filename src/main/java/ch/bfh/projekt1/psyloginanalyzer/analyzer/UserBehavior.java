@@ -6,22 +6,22 @@ import java.util.Map;
  * Created by jan on 03.12.16.
  */
 public class UserBehavior {
-    private Map<String, Integer> browserUsage;
-    private Map<String, Integer> languageUsage;
+    private UsageStatistics browserUsage;
+    private UsageStatistics languageUsage;
 
-    public Map<String, Integer> getBrowserUsage() {
+    public UsageStatistics getBrowserUsage() {
         return browserUsage;
     }
 
-    public Map<String, Integer> getLanguageUsage() {
+    public UsageStatistics getLanguageUsage() {
         return languageUsage;
     }
 
-    public void setBrowserUsage(Map<String, Integer> browserUsage) {
+    public void setBrowserUsage(UsageStatistics browserUsage) {
         this.browserUsage = browserUsage;
     }
 
-    public void setLanguageUsage(Map<String, Integer> languageUsage) {
+    public void setLanguageUsage(UsageStatistics languageUsage) {
         this.languageUsage = languageUsage;
     }
 }

@@ -29,18 +29,18 @@ public class UserBehaviorAnalyser {
         return user;
     }
 
-
-    private Map<String, Integer> getUsageInPercent(List<StaticSessionData> list, Function<StaticSessionData, String> function) {
+    private UsageStatistics getUsageInPercent(List<StaticSessionData> list, Function<StaticSessionData, String> function) {
         Map<String, Integer> elements = new HashMap<>();
         for (StaticSessionData result : list) {
             elements.put(function.apply(result), elements.getOrDefault(function.apply(result), 0) + 1);
         }
 
-        int collectedData = elements.values().stream().mapToInt(Integer::intValue).sum();
+        int numberOfLogins = elements.values().stream().mapToInt(Integer::intValue).sum();
 
         for (Map.Entry<String, Integer> entry : elements.entrySet()) {
-            entry.setValue((int)(100.0/collectedData*entry.getValue()));
+            entry.setValue((int)(100.0/numberOfLogins*entry.getValue()));
         }
-        return elements;
+
+        return new UsageStatistics(elements, numberOfLogins);
     }
 }

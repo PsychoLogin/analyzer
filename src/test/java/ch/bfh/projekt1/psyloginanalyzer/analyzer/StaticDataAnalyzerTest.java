@@ -33,8 +33,8 @@ public class StaticDataAnalyzerTest {
     @Test
     public void userIsAllowedToLogin() {
         UserBehavior userBehavior = new UserBehavior();
-        userBehavior.setBrowserUsage(Collections.singletonMap("Chrome", 100));
-        userBehavior.setLanguageUsage(Collections.singletonMap("de", 100));
+        userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 100));
+        userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
         Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
@@ -43,10 +43,20 @@ public class StaticDataAnalyzerTest {
     @Test
     public void userIsNotAllowedToLogin() {
         UserBehavior userBehavior = new UserBehavior();
-        userBehavior.setBrowserUsage(Collections.singletonMap("IE", 100));
-        userBehavior.setLanguageUsage(Collections.singletonMap("fr", 100));
+        userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 100));
+        userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
         Assert.assertFalse(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
+    }
+
+    @Test
+    public void loginIsAllowedIfThereAreLessThan5LoginsInStatistic() {
+        UserBehavior userBehavior = new UserBehavior();
+        userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 4));
+        userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 4));
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+
+        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
     }
 }

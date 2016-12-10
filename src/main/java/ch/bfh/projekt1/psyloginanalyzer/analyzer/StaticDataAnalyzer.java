@@ -3,7 +3,6 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 /**
  * Created by jan on 03.12.16.
@@ -29,9 +28,9 @@ public class StaticDataAnalyzer {
     }
 
 
-    private boolean check(String currentlyUsed, Map<String, Integer> preferred) {
-        int usageOfCurrentBrowser = preferred.getOrDefault(currentlyUsed, 0);
-        return usageOfCurrentBrowser >= 20;
+    private boolean check(String currentlyUsed, UsageStatistics usageStatistics) {
+        int usageOfCurrentBrowser = usageStatistics.getUsagesInPercent().getOrDefault(currentlyUsed, 0);
+        return usageStatistics.getNumberOfLogins() < 5 || usageOfCurrentBrowser >= 20;
     }
 
 

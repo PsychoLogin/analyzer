@@ -57,7 +57,9 @@ public class UserBehaviorAnalyserTest {
     @Test
     public void getUserBehavior() {
         UserBehavior user = cut.getUserBehavior("", "");
-        Assert.assertEquals(66, (int)user.getBrowserUsage().get("IE"));
-        Assert.assertEquals(100, (int)user.getLanguageUsage().get("de"));
+        Assert.assertEquals(66, (int)user.getBrowserUsage().getUsagesInPercent().get("IE"));
+        Assert.assertEquals(100, (int)user.getLanguageUsage().getUsagesInPercent().get("de"));
+        Assert.assertEquals(3, user.getLanguageUsage().getNumberOfLogins());
+        Assert.assertEquals(3, user.getBrowserUsage().getNumberOfLogins());
     }
 }
