@@ -21,7 +21,7 @@ import java.util.List;
  * @details
  */
 public class IterableRecordReader extends BaseRecordReader {
-    private final Iterator<? extends IWritableConvertible> entities;
+    private Iterator<? extends IWritableConvertible> iterator;
 
     /**
      * @brief
@@ -31,7 +31,7 @@ public class IterableRecordReader extends BaseRecordReader {
      * @param entities
      */
     public IterableRecordReader(final Iterable<? extends IWritableConvertible> entities) {
-        this.entities = entities.iterator();
+        iterator = entities.iterator();
     }
 
     @Override
@@ -46,12 +46,12 @@ public class IterableRecordReader extends BaseRecordReader {
 
     @Override
     public List<Writable> next() {
-        return entities.next().toWritable();
+        return iterator.next().toWritable();
     }
 
     @Override
     public boolean hasNext() {
-        return entities.hasNext();
+        return iterator.hasNext();
     }
 
     @Override

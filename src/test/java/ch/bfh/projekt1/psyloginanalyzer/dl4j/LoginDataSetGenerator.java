@@ -9,15 +9,18 @@ import java.util.*;
  * Created by othma on 27.11.2016.
  */
 public class LoginDataSetGenerator {
+    public static final int MAX_OFFSET = 200;
     public static final int DEFAULT_PASSWORD_KEYSTROKES = 10;
     public static final int DEFAULT_TRAINING_ENTRIES_PER_CATEGORY = 100;
 
     public static Login generateLogin(final int rate) {
         final Calendar timestamp = Calendar.getInstance();
         final List<Date> timestamps = new ArrayList<>();
+        final Random random = new Random();
+        final int maxOffset = MAX_OFFSET;
         for (int j = 0; j < DEFAULT_PASSWORD_KEYSTROKES; ++j) {
             timestamps.add(timestamp.getTime());
-            timestamp.add(Calendar.MILLISECOND, rate);
+            timestamp.add(Calendar.MILLISECOND, (int) Math.round(rate + random.nextGaussian() * maxOffset));
         }
         return new Login(timestamps);
     }

@@ -16,9 +16,9 @@ public class Dl4jLoginAnalyzerTest {
 
     @Test
     public void testAlarm() throws Exception {
-        List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 1);
+        List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 100);
         analyzer.train(trainingData);
         Assert.assertTrue(analyzer.analyze(LoginDataSetGenerator.generateLogin(500)));
-        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(50)));
+        Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(100)));
     }
 }
