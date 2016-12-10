@@ -3,6 +3,7 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -17,6 +18,7 @@ public class StaticDataAnalyzerTest {
         cut = new StaticDataAnalyzer();
     }
 
+    @Ignore
     @Test
     public void sameOperatingSystem() throws Exception {
         StaticSessionData staticSessionData = new StaticSessionData();
@@ -24,6 +26,7 @@ public class StaticDataAnalyzerTest {
         Assert.assertTrue(cut.analyze(staticSessionData));
     }
 
+    @Ignore
     @Test
     public void differentOperatingSystem() throws Exception {
         StaticSessionData staticSessionData = new StaticSessionData();

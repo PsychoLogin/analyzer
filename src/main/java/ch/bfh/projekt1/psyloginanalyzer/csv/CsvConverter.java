@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.csv;
 
+import ch.bfh.projekt1.psyloginanalyzer.entity.IWritableConvertible;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 
@@ -29,7 +30,7 @@ public class CsvConverter {
         return this;
     }
 
-    public <T> CsvConverter output(final TrainingEntry<T> entry, final Consumer<T> printer) {
+    public <T extends IWritableConvertible> CsvConverter output(final TrainingEntry<T> entry, final Consumer<T> printer) {
         printer.accept(entry.getEntity());
         content.append(SEPARATOR);
         content.append(entry.isResult() ? 1 : 0);

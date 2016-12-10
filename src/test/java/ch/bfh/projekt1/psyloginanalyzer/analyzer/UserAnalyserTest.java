@@ -3,6 +3,7 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 

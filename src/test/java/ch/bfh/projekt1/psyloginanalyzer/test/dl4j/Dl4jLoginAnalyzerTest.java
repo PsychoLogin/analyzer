@@ -16,7 +16,6 @@ import java.util.List;
 public class Dl4jLoginAnalyzerTest {
     private final ITrainableAnalyzer analyzer = new Dl4jLoginAnalyzer();
 
-    @Ignore
     @Test
     public void testAlarm() throws Exception {
         List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 1);
