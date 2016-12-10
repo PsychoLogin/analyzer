@@ -18,15 +18,9 @@ public class UsageStatistics {
         return numberOfLogins;
     }
 
-    public void setNumberOfLogins(int numberOfLogins) {
-        this.numberOfLogins = numberOfLogins;
-    }
 
     public Map<String, Integer> getUsagesInPercent() {
         return usageInPercent;
     }
 
-    public void setUsageInPercent(Map<String, Integer> usageInPercent) {
-        this.usageInPercent = usageInPercent;
-    }
 }
