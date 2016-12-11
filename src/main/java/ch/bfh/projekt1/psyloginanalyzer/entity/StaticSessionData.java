@@ -73,12 +73,14 @@ public class StaticSessionData {
         private String operatingSystem;
         private String language;
         private String browser;
+        private String referrer;
 
         public StaticSessionData build() {
             StaticSessionData staticSessionData = new StaticSessionData();
             staticSessionData.setOperationSystem(this.operatingSystem);
             staticSessionData.setLanguage(this.language);
             staticSessionData.setBrowser(this.browser);
+            staticSessionData.setReferrer(this.referrer);
             return staticSessionData;
         }
 
@@ -98,6 +100,11 @@ public class StaticSessionData {
 
         public Builder withBrowser(String browser) {
             this.browser = browser;
+            return this;
+        }
+
+        public Builder withReferrer(String referrer) {
+            this.referrer = referrer;
             return this;
         }
     }

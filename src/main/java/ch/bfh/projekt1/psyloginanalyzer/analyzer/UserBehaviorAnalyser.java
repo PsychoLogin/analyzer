@@ -26,6 +26,7 @@ public class UserBehaviorAnalyser {
         UserBehavior user = new UserBehavior();
         user.setLanguageUsage(getUsageInPercent(resultList, StaticSessionData::getLanguage));
         user.setBrowserUsage(getUsageInPercent(resultList, StaticSessionData::getBrowser));
+        user.setReferrer(getUsageInPercent(resultList, StaticSessionData::getReferrer));
         return user;
     }
 

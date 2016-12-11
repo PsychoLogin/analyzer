@@ -31,7 +31,7 @@ public class StaticDataAnalyzer {
         UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId, currentUserSession.getOperationSystem());
         int loginPenalty = check(currentUserSession.getBrowser(), userBehavior.getBrowserUsage());
         loginPenalty += check(currentUserSession.getLanguage(), userBehavior.getLanguageUsage());
-
+        loginPenalty += check(currentUserSession.getReferrer(), userBehavior.getReferrer());
         boolean loginAllowed = loginPenalty < PENALTY_LIMIT;
 
         if(LOGGER.isDebugEnabled()) {

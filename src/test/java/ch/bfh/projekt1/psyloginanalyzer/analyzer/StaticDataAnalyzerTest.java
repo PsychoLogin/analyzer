@@ -18,9 +18,10 @@ public class StaticDataAnalyzerTest {
 
     private StaticDataAnalyzer cut;
 
-    private final StaticSessionData CHROME_DE_SESSION_DATA = new StaticSessionData.Builder()
+    private final StaticSessionData CHROME_DE_GOOGLE_SESSION_DATA = new StaticSessionData.Builder()
             .withBrowser("Chrome")
             .withLanguage("de")
+            .withReferrer("google.ch")
             .withOperatingSystem("Win10")
             .build();
 
@@ -35,9 +36,10 @@ public class StaticDataAnalyzerTest {
         UserBehavior userBehavior = new UserBehavior();
         userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("Chrome", 100), 100));
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("de", 100), 100));
+        userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("google.ch", 100), 100));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
     }
 
     @Test
@@ -45,9 +47,10 @@ public class StaticDataAnalyzerTest {
         UserBehavior userBehavior = new UserBehavior();
         userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 100));
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
+        userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 100));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
-        Assert.assertFalse(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
+        Assert.assertFalse(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
     }
 
     @Test
@@ -55,8 +58,9 @@ public class StaticDataAnalyzerTest {
         UserBehavior userBehavior = new UserBehavior();
         userBehavior.setBrowserUsage(new UsageStatistics(Collections.singletonMap("IE", 100), 4));
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 4));
+        userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 4));
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
     }
 }

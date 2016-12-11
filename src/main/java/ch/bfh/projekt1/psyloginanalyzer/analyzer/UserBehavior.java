@@ -8,6 +8,15 @@ import java.util.Map;
 public class UserBehavior {
     private UsageStatistics browserUsage;
     private UsageStatistics languageUsage;
+    private UsageStatistics referrer;
+
+    public UsageStatistics getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(UsageStatistics referrer) {
+        this.referrer = referrer;
+    }
 
     public UsageStatistics getBrowserUsage() {
         return browserUsage;
