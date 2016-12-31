@@ -1,11 +1,8 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
-import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
-import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -21,10 +18,8 @@ import java.util.function.Function;
 @Stateless
 public class UserBehaviorAnalyser {
 
-    @PersistenceUnit(name = "pyslogin")
+    @PersistenceUnit(unitName = "psylogin")
     EntityManagerFactory emf;
-
-
 
     public UserBehavior getUserBehavior(String userId, String currentDeviceType) {
 
