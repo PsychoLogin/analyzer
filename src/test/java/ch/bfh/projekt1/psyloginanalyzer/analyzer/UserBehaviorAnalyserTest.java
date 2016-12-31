@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ public class UserBehaviorAnalyserTest {
     @Before
     public void init() {
         cut = new UserBehaviorAnalyser();
-        cut.em = mock(EntityManager.class);
+        cut.emf = mock(EntityManagerFactory.class);
+        EntityManager em = mock(EntityManager.class);
+        when(cut.emf.createEntityManager()).thenReturn(em);
 
         List<StaticSessionData> results = new ArrayList<>();
         results.add(new StaticSessionData.Builder()
@@ -54,7 +57,7 @@ public class UserBehaviorAnalyserTest {
 
         TypedQuery mockedQuery = mock(TypedQuery.class);
         when(mockedQuery.getResultList()).thenReturn(results);
-        when(cut.em.createQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
+        when(em.createQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
     }
 
     @Test

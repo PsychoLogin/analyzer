@@ -1,11 +1,14 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
+import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javax.security.auth.login.Configuration;
 import java.util.Collections;
 
 import static org.mockito.Mockito.mock;
@@ -18,6 +21,7 @@ public class StaticDataAnalyzerTest {
 
     private StaticDataAnalyzer cut;
 
+
     private final StaticSessionData CHROME_DE_GOOGLE_SESSION_DATA = new StaticSessionData.Builder()
             .withBrowser("Chrome")
             .withLanguage("de")
@@ -29,6 +33,13 @@ public class StaticDataAnalyzerTest {
     public void setup() {
         cut = new StaticDataAnalyzer();
         cut.userBehaviorAnalyser = mock(UserBehaviorAnalyser.class);
+        cut.configurationService = mock(ConfigurationService.class);
+
+        StaticAnalyseConfig mockConfig = new StaticAnalyseConfig();
+        mockConfig.setPenaltyErrorLevel(30);
+        mockConfig.setPenaltyWarningLevel(20);
+        mockConfig.setMinimumNumberLogins(5);
+        when(cut.configurationService.getConfig()).thenReturn(mockConfig);
     }
 
     @Test

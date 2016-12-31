@@ -1,5 +1,7 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
+import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.apache.log4j.Logger;
 
@@ -19,6 +21,9 @@ public class StaticDataAnalyzer {
     @Inject
     UserBehaviorAnalyser userBehaviorAnalyser;
 
+    @Inject
+    ConfigurationService configurationService;
+
     /**
      * @param userId
      * @param currentUserSession
@@ -28,14 +33,16 @@ public class StaticDataAnalyzer {
 
     public boolean analyseUser(String userId, StaticSessionData currentUserSession) {
 
+        StaticAnalyseConfig config = configurationService.getConfig();
+
         UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId, currentUserSession.getOperationSystem());
         int loginPenalty = check(currentUserSession.getBrowser(), userBehavior.getBrowserUsage());
         loginPenalty += check(currentUserSession.getLanguage(), userBehavior.getLanguageUsage());
         loginPenalty += check(currentUserSession.getReferrer(), userBehavior.getReferrer());
-        boolean loginAllowed = loginPenalty < PENALTY_LIMIT;
+        boolean loginAllowed = loginPenalty < config.getPenaltyErrorLevel();
 
         if(LOGGER.isDebugEnabled()) {
-            LOGGER.debug("User can Login = " + loginAllowed+ " ->> Because of "+ loginPenalty +" LIMIT: "+ PENALTY_LIMIT);
+            LOGGER.debug("User can Login = " + loginAllowed+ " ->> Because of "+ loginPenalty +" LIMIT: "+ config.getPenaltyErrorLevel());
         }
 
         return loginAllowed;

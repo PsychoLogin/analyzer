@@ -1,9 +1,13 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
+import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import java.util.HashMap;
@@ -14,14 +18,19 @@ import java.util.function.Function;
 /**
  * Created by jan on 03.12.16.
  */
+@Stateless
 public class UserBehaviorAnalyser {
 
-    @PersistenceUnit
-    @Inject
-    EntityManager em;
+    @PersistenceUnit(name = "pyslogin")
+    EntityManagerFactory emf;
+
+
 
     public UserBehavior getUserBehavior(String userId, String currentDeviceType) {
-        TypedQuery<StaticSessionData> query = em.createQuery("", StaticSessionData.class);
+
+        EntityManager entityManager = emf.createEntityManager();
+
+        TypedQuery<StaticSessionData> query = entityManager.createQuery("Select s from StaticSessionData s", StaticSessionData.class);
         List<StaticSessionData> resultList = query.getResultList();
         UserBehavior user = new UserBehavior();
         user.setLanguageUsage(getUsageInPercent(resultList, StaticSessionData::getLanguage));

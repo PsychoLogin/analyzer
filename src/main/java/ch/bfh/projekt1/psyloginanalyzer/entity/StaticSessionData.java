@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,11 +14,17 @@ import javax.persistence.Table;
 public class StaticSessionData {
 
     @Id
+    @Column(name = "session_id")
     private String sessionId;
+    @Column(name = "os")
     private String operationSystem;
+    @Column(name = "lang")
     private String language;
+    @Column(name = "browser")
     private String browser;
+    @Column(name = "location")
     private String location;
+    @Column(name = "referrer")
     private String referrer;
 
     public String getSessionId() {
