@@ -22,6 +22,9 @@ public class StaticDataAnalyzer {
     UserBehaviorAnalyser userBehaviorAnalyser;
 
     @Inject
+    IpAnalyzer ipAnalyzer;
+
+    @Inject
     ConfigurationService configurationService;
 
     /**
@@ -35,10 +38,13 @@ public class StaticDataAnalyzer {
 
         StaticAnalyseConfig config = configurationService.getConfig();
 
+        ipAnalyzer.checkRange(currentUserSession.getLocation());
+
         UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId, currentUserSession.getOperationSystem());
         int loginPenalty = check(currentUserSession.getBrowser(), userBehavior.getBrowserUsage());
         loginPenalty += check(currentUserSession.getLanguage(), userBehavior.getLanguageUsage());
         loginPenalty += check(currentUserSession.getReferrer(), userBehavior.getReferrer());
+        loginPenalty += check(ipAnalyzer.checkRange(currentUserSession.getLocation()), userBehavior.getLocation());
         boolean loginAllowed = loginPenalty < config.getPenaltyErrorLevel();
 
         if(LOGGER.isDebugEnabled()) {

@@ -9,6 +9,7 @@ public class UserBehavior {
     private UsageStatistics browserUsage;
     private UsageStatistics languageUsage;
     private UsageStatistics referrer;
+    private UsageStatistics location;
 
     public UsageStatistics getReferrer() {
         return referrer;
@@ -32,5 +33,13 @@ public class UserBehavior {
 
     public void setLanguageUsage(UsageStatistics languageUsage) {
         this.languageUsage = languageUsage;
+    }
+
+    public UsageStatistics getLocation() {
+        return location;
+    }
+
+    public void setLocation(UsageStatistics location) {
+        this.location = location;
     }
 }

@@ -1,8 +1,10 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -21,6 +23,9 @@ public class UserBehaviorAnalyser {
     @PersistenceUnit(unitName = "psylogin")
     EntityManagerFactory emf;
 
+    @Inject
+    IpAnalyzer ipAnalyzer;
+
     public UserBehavior getUserBehavior(String userId, String currentDeviceType) {
 
         EntityManager entityManager = emf.createEntityManager();
@@ -31,6 +36,7 @@ public class UserBehaviorAnalyser {
         user.setLanguageUsage(getUsageInPercent(resultList, StaticSessionData::getLanguage));
         user.setBrowserUsage(getUsageInPercent(resultList, StaticSessionData::getBrowser));
         user.setReferrer(getUsageInPercent(resultList, StaticSessionData::getReferrer));
+        user.setLocation(getLocationUsageInPercent(resultList));
         return user;
     }
 
@@ -42,10 +48,29 @@ public class UserBehaviorAnalyser {
 
         int numberOfLogins = elements.values().stream().mapToInt(Integer::intValue).sum();
 
+        transformAbsoluteValueToPercent(elements, numberOfLogins);
+
+        return new UsageStatistics(elements, numberOfLogins);
+    }
+
+    private UsageStatistics getLocationUsageInPercent(List<StaticSessionData> list) {
+
+        Map<String, Integer> elements = new HashMap<>();
+        for(StaticSessionData result : list) {
+            String provider = ipAnalyzer.checkRange(result.getLocation());
+            elements.put(provider, elements.getOrDefault(provider, 0) + 1);
+        }
+
+        int numberOfLogins = elements.values().stream().mapToInt(Integer::intValue).sum();
+
+        transformAbsoluteValueToPercent(elements, numberOfLogins);
+
+        return new UsageStatistics(elements, numberOfLogins);
+    }
+
+    private void transformAbsoluteValueToPercent(Map<String, Integer> elements, int numberOfLogins) {
         for (Map.Entry<String, Integer> entry : elements.entrySet()) {
             entry.setValue((int)(100.0/numberOfLogins*entry.getValue()));
         }
-
-        return new UsageStatistics(elements, numberOfLogins);
     }
 }

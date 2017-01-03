@@ -13,6 +13,7 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +27,10 @@ public class UserBehaviorAnalyserTest {
     @Before
     public void init() {
         cut = new UserBehaviorAnalyser();
+
+        cut.ipAnalyzer = mock(IpAnalyzer.class);
+        when(cut.ipAnalyzer.checkRange(anyString())).thenReturn("MyProvider");
+
         cut.emf = mock(EntityManagerFactory.class);
         EntityManager em = mock(EntityManager.class);
         when(cut.emf.createEntityManager()).thenReturn(em);
@@ -36,6 +41,7 @@ public class UserBehaviorAnalyserTest {
                 .withLanguage("de")
                 .withBrowser("Chrome")
                 .withReferrer("facebook.com")
+                .withLocation("5.44.113.122")
                 .build()
         );
 
@@ -44,6 +50,7 @@ public class UserBehaviorAnalyserTest {
                 .withLanguage("de")
                 .withBrowser("IE")
                 .withReferrer("google.ch")
+                .withLocation("5.44.113.122")
                 .build()
         );
 
@@ -52,6 +59,7 @@ public class UserBehaviorAnalyserTest {
                 .withLanguage("de")
                 .withBrowser("IE")
                 .withReferrer("google.ch")
+                .withLocation("5.44.113.122")
                 .build()
         );
 
@@ -66,6 +74,7 @@ public class UserBehaviorAnalyserTest {
         Assert.assertEquals(66, (int)user.getBrowserUsage().getUsagesInPercent().get("IE"));
         Assert.assertEquals(100, (int)user.getLanguageUsage().getUsagesInPercent().get("de"));
         Assert.assertEquals(66, (int)user.getReferrer().getUsagesInPercent().get("google.ch"));
+        Assert.assertEquals(100, (int)user.getLocation().getUsagesInPercent().get("MyProvider"));
         Assert.assertEquals(3, user.getLanguageUsage().getNumberOfLogins());
         Assert.assertEquals(3, user.getBrowserUsage().getNumberOfLogins());
         Assert.assertEquals(3, user.getReferrer().getNumberOfLogins());
