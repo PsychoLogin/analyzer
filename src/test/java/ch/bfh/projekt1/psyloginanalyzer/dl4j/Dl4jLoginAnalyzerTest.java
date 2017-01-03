@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class Dl4jLoginAnalyzerTest {
     private final ITrainableAnalyzer analyzer = new Dl4jLoginAnalyzer();
-    private final PasswordAnalyzer pwAnalyzer = new PasswordAnalyzer();
 
     @Test
     public void testAlarm() throws Exception {
@@ -48,5 +47,33 @@ public class Dl4jLoginAnalyzerTest {
         final long attackCount = attackData.stream().filter(t -> !silentAnalyse(analyzer, t)).count();
         Assert.assertTrue((double) testCount / testData.size() > 0.9);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.7);
+    }
+
+    @Test
+    public void testgimpel() throws Exception {
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/gimpel-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/gimpel-test.csv");
+        final List<Login> attackData = LoginsParser.getTestData("/gimpel-attack.csv");
+        analyzer.train(trainingData);
+        final long testCount = testData.stream().filter(t -> silentAnalyse(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyse(analyzer, t)).count();
+        System.err.println("Testdata Gimpel: " + testCount + "/" + testData.size());
+        System.err.println("AttackData Gimpel: " + attackCount + "/" + attackData.size());
+        Assert.assertTrue((double) testCount / testData.size() > 0.5);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
+    }
+
+    @Test
+    public void testschei2() throws Exception {
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/schei2-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/schei2-test.csv");
+        final List<Login> attackData = LoginsParser.getTestData("/schei2-attack.csv");
+        analyzer.train(trainingData);
+        final long testCount = testData.stream().filter(t -> silentAnalyse(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyse(analyzer, t)).count();
+        System.err.println("Testdata Schei2: " + testCount + "/" + testData.size());
+        System.err.println("AttackData Schei2: " + attackCount + "/" + attackData.size());
+        Assert.assertTrue((double) testCount / testData.size() > 0.5);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
     }
 }

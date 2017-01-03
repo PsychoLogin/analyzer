@@ -20,15 +20,7 @@ public class PasswordAnalyzer {
     @PersistenceUnit(unitName = "psylogin")
     private EntityManagerFactory emf;
 
-    public List<Action> getActions(){
 
-        EntityManager entityManager = emf.createEntityManager();
-
-        TypedQuery<Action> query = entityManager.createQuery("select a from Action a", Action.class);
-        List<Action> actionResult = query.getResultList();
-
-        return actionResult;
-    }
 
 
 }
