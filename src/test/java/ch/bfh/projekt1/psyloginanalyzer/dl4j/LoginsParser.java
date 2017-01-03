@@ -23,28 +23,16 @@ import java.util.stream.Collectors;
  */
 public class LoginsParser {
     private static final ThreadLocal<DateFormat> DATE_FORMAT = ThreadLocal.<DateFormat>withInitial(() -> new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS"));
-    private static final String LOGINS_RESOURCE_PATH = "/kesso-training.csv";
     private static final String SPLIT_CHAR = ",";
     private static final int TIMESTAMP_INDEX = 0;
     private static final int SESSION_ID_INDEX = 3;
-    private static final int USER_NAME_INDEX = 6;
     private final Map<Integer, List<Date>> loginsPerSession = new HashMap<>();
-    private final Map<Integer, String> usersPerSession = new HashMap<>();
-
-    /**
-     *
-     */
-    public LoginsParser() throws IOException {
-        this(LOGINS_RESOURCE_PATH);
-    }
 
     private LoginsParser(final String resourcePath) throws IOException {
         try(final BufferedReader reader = new BufferedReader(new InputStreamReader(LoginsParser.class.getResourceAsStream(resourcePath)))) {
             for (String line; (line = reader.readLine()) != null;) {
                 final String items[] = line.split(SPLIT_CHAR);
-                final String userName = items[USER_NAME_INDEX];
                 final int sessionId = Integer.parseInt(items[SESSION_ID_INDEX]);
-                usersPerSession.put(sessionId, userName);
                 if (!loginsPerSession.containsKey(sessionId)) {
                     loginsPerSession.put(sessionId, new ArrayList<>());
                 }
@@ -58,38 +46,35 @@ public class LoginsParser {
         loginsPerSession.entrySet().forEach(e -> Collections.sort(e.getValue()));
     }
 
-    private Collection<List<Long>> getKeystrokeDifferences(final String userName) {
-        final Collection<Integer> sessionsForUser = usersPerSession.entrySet().stream().filter(e -> e.getValue().equals(userName)).map(e -> e.getKey()).collect(Collectors.toList());
-        final Collection<List<Date>> loginTimestamps = loginsPerSession.entrySet().stream().filter(e -> sessionsForUser.contains(e.getKey())).map(e -> e.getValue()).collect(Collectors.toList());
-        return loginTimestamps.stream().map(EntityHelper::differences).collect(Collectors.toList());
+    private Collection<List<Long>> getKeystrokeDifferences() {
+        return loginsPerSession.values().stream().map(EntityHelper::differences).collect(Collectors.toList());
     }
 
-    /**
-     *
-     * @param userName
-     * @return
-     */
-    public List<TrainingEntry<Login>> getTrainingSetForUser(final String userName) {
-        return SampleGenerator.generate(getKeystrokeDifferences(userName));
-    }
-
-    /**
-     *
-     * @param userName
-     * @return
-     */
-    public List<Login> getTestData(final String userName) {
-        return getKeystrokeDifferences(userName).stream().map(l -> EntityHelper.createLogin(l)).collect(Collectors.toList());
+    private List<TrainingEntry<Login>> getTrainingSetForUser() {
+        return SampleGenerator.generate(getKeystrokeDifferences());
     }
 
     /**
      *
      * @param resourcePath
-     * @param userName
      * @return
      * @throws IOException
      */
-    public static List<Login> getTestData(final String resourcePath, final String userName) throws IOException {
-        return new LoginsParser(resourcePath).getTestData(userName);
+    public static List<TrainingEntry<Login>> getTrainingSet(final String resourcePath) throws IOException {
+        return new LoginsParser(resourcePath).getTrainingSetForUser();
+    }
+
+    private List<Login> getTestData() {
+        return getKeystrokeDifferences().stream().map(l -> EntityHelper.createLogin(l)).collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param resourcePath
+     * @return
+     * @throws IOException
+     */
+    public static List<Login> getTestData(final String resourcePath) throws IOException {
+        return new LoginsParser(resourcePath).getTestData();
     }
 }

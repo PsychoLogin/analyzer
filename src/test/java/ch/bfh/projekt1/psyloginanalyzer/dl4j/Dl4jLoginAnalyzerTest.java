@@ -40,10 +40,9 @@ public class Dl4jLoginAnalyzerTest {
 
     @Test
     public void testKesso6() throws Exception {
-        final LoginsParser input = new LoginsParser();
-        final List<TrainingEntry<Login>> trainingData = input.getTrainingSetForUser("kesso6");
-        final List<Login> testData = LoginsParser.getTestData("/kesso-test.csv", "kesso6");
-        final List<Login> attackData = LoginsParser.getTestData("/kesso-attack.csv", "kesso7");
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/kesso-test.csv");
+        final List<Login> attackData = LoginsParser.getTestData("/kesso-attack.csv");
         analyzer.train(trainingData);
         final long testCount = testData.stream().filter(t -> silentAnalyse(analyzer, t)).count();
         final long attackCount = attackData.stream().filter(t -> !silentAnalyse(analyzer, t)).count();
