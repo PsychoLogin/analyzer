@@ -23,7 +23,6 @@ public class Dl4jLoginAnalyzerTest {
     private final PasswordAnalyzer pwAnalyzer = new PasswordAnalyzer();
 
     @Test
-    @Ignore
     public void testAlarm() throws Exception {
         List<TrainingEntry<Login>> trainingData = LoginDataSetGenerator.generateBipolarLoginTrainingSet(500, 100);
         analyzer.train(trainingData);
@@ -40,22 +39,15 @@ public class Dl4jLoginAnalyzerTest {
     }
 
     @Test
-    //@Ignore
     public void testKesso1() throws Exception {
         final LoginsParser input = new LoginsParser();
         final List<TrainingEntry<Login>> trainingData = input.getTrainingSetForUser("kesso6");
         final List<Login> testData = LoginsParser.getTestData("/kesso-test.csv", "kesso6");
         final List<Login> attackData = LoginsParser.getTestData("/kesso-attack.csv", "kesso7");
-
         analyzer.train(trainingData);
-        System.out.println("testData:");
-        testData.stream().forEach(System.out::println);
-        System.out.println("attackData:");
-        attackData.stream().forEach(System.out::println);
         final long testCount = testData.stream().filter(t -> silentAnalyse(analyzer, t)).count();
         final long attackCount = attackData.stream().filter(t -> !silentAnalyse(analyzer, t)).count();
-
-        System.err.println("testCount: " + testCount + "/" + testData.size());
-        System.err.println("attackCount: " + attackCount + "/" + attackData.size());
+        Assert.assertTrue((double) testCount / testData.size() > 0.9);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.7);
     }
 }
