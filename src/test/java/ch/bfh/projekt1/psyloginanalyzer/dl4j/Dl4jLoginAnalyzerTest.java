@@ -39,7 +39,7 @@ public class Dl4jLoginAnalyzerTest {
     }
 
     @Test
-    public void testKesso1() throws Exception {
+    public void testKesso6() throws Exception {
         final LoginsParser input = new LoginsParser();
         final List<TrainingEntry<Login>> trainingData = input.getTrainingSetForUser("kesso6");
         final List<Login> testData = LoginsParser.getTestData("/kesso-test.csv", "kesso6");
