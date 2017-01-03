@@ -45,9 +45,7 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
     private DataNormalization normalizer;
 
     private static int getNumberOfInputFeatures(final Collection<TrainingEntry<Login>> trainingDataSet) {
-        final List<Date> timestamps = trainingDataSet.iterator().next().getEntity().getKeystrokeTimestamps();
-        if (timestamps.isEmpty()) throw new IllegalArgumentException();
-        return timestamps.size() - 1;
+        return trainingDataSet.iterator().next().getEntity().getKeystrokeTimestamps().size();
     }
 
     private static DataSet toDataSet(final Collection<TrainingEntry<Login>> trainingDataSet) {

@@ -10,24 +10,23 @@ import java.util.stream.Collectors;
  * Created by othma on 27.11.2016.
  */
 public class Login implements IWritableConvertible {
-    private final List<Date> keystrokeTimestamps;
+    private final List<Long> keystrokeTimestampDifferences;
 
-    public Login(Collection<Date> keystrokeTimestamps) {
-        this.keystrokeTimestamps = Collections.unmodifiableList(new ArrayList<Date>(keystrokeTimestamps));
+    public Login(Collection<Long> keystrokeTimestampDifferences) {
+        this.keystrokeTimestampDifferences = Collections.unmodifiableList(new ArrayList<Long>(keystrokeTimestampDifferences));
     }
 
-    public List<Date> getKeystrokeTimestamps() {
-        return keystrokeTimestamps;
+    public List<Long> getKeystrokeTimestamps() {
+        return keystrokeTimestampDifferences;
     }
 
     @Override
     public List<Writable> toWritable() {
-        final LongWritable previous = new LongWritable(keystrokeTimestamps.stream().findFirst().orElse(new Date()).getTime());
-        return keystrokeTimestamps.stream().skip(1).map(d -> {
-            final long current = d.getTime();
-            final LongWritable result = new LongWritable(current - previous.get());
-            previous.set(current);
-            return result;
-        }).collect(Collectors.toList());
+        return keystrokeTimestampDifferences.stream().map(l -> new LongWritable(l)).collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return keystrokeTimestampDifferences.toString();
     }
 }

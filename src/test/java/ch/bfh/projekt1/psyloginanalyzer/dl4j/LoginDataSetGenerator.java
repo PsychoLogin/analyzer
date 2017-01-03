@@ -2,6 +2,7 @@ package ch.bfh.projekt1.psyloginanalyzer.dl4j;
 
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
+import ch.bfh.projekt1.psyloginanalyzer.login.EntityHelper;
 
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class LoginDataSetGenerator {
             timestamps.add(timestamp.getTime());
             timestamp.add(Calendar.MILLISECOND, (int) Math.round(rate + random.nextGaussian() * maxOffset));
         }
-        return new Login(timestamps);
+        return EntityHelper.newLogin(timestamps);
     }
 
     private static void generateKeyEvents(final List<TrainingEntry<Login>> trainingData, final int rate, final boolean result) {

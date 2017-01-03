@@ -31,4 +31,9 @@ public class TrainingEntry<T extends IWritableConvertible> implements IWritableC
         entity.add(new BooleanWritable(result));
         return entity;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("(").append(entity).append(',').append(result).append(')').toString();
+    }
 }
