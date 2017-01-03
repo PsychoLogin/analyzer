@@ -17,8 +17,8 @@ public class AnalyseResource {
     @Inject
     UserBehaviorAnalyser dataAnalyzer;
 
-    @GET
-    public void analyse() {
+    @POST
+    public void analyseLogin() {
         dataAnalyzer.getUserBehavior("","");
     }
 
