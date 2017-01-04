@@ -1,7 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

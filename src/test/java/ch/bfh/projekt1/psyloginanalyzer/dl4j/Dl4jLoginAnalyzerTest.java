@@ -105,4 +105,12 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) testCount / testData.size() > 0.5);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
     }
+    @Test
+    public void testsingleLoginkesso6() throws Exception{
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/kesso-singleLogin.csv");
+        analyzer.train(trainingData);
+        final long testCount = testData.stream().filter(t -> silentAnalyse(analyzer, t)).count();
+        Assert.assertTrue((double) testCount == 1);
+    }
 }
