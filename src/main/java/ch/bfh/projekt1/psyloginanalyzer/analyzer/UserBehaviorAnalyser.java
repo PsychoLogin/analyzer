@@ -26,12 +26,13 @@ public class UserBehaviorAnalyser {
     @Inject
     IpAnalyzer ipAnalyzer;
 
-    public UserBehavior getUserBehavior(Long userId) {
+    public UserBehavior getUserBehavior(long currentSessionId, long blogUserId) {
 
         EntityManager entityManager = emf.createEntityManager();
 
-        TypedQuery<StaticSessionData> query = entityManager.createQuery("Select s from StaticSessionData s where s.session.blogUser.id = :blogUserId", StaticSessionData.class);
-        query.setParameter("blogUserId", userId);
+        TypedQuery<StaticSessionData> query = entityManager.createNamedQuery(StaticSessionData.GET_OLD_SESSIONS, StaticSessionData.class);
+        query.setParameter("blogUserId", blogUserId);
+        query.setParameter("currentSessionId", currentSessionId);
         List<StaticSessionData> resultList = query.getResultList();
         UserBehavior user = new UserBehavior();
         user.setLanguageUsage(getUsageInPercent(resultList, StaticSessionData::getLanguage));

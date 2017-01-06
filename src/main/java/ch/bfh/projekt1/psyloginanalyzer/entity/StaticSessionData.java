@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -14,10 +16,19 @@ import javax.persistence.Table;
  * Created by jan on 03.12.16.
  */
 
+@NamedQueries(
+        {
+                @NamedQuery(name = StaticSessionData.GET_CURRENT_SESSION, query = "Select s from StaticSessionData s where s.sessionId = :currentSessionId"),
+                @NamedQuery(name = StaticSessionData.GET_OLD_SESSIONS, query = "Select s from StaticSessionData s where s.session.blogUser.id = :blogUserId AND s.sessionId <> :currentSessionId")
+        }
+)
+
 @Entity
 @Table(name = "static_session_datas")
 public class StaticSessionData {
 
+    public static final String GET_CURRENT_SESSION = "getCurrentSession";
+    public static final String GET_OLD_SESSIONS = "getOldSessions";
     @Id
     @Column(name = "session_id")
     private long sessionId;

@@ -3,9 +3,10 @@ package ch.bfh.projekt1.psyloginanalyzer.analyzer.ip;
 /**
  * Created by Jan on 06.01.2017.
  */
-public class InvalidIpException extends Exception {
+class InvalidIpException extends Exception {
 
     InvalidIpException(String msg) {
        super(msg);
     }
 }
+
