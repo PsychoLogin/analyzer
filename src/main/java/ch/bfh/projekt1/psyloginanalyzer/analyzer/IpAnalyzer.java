@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import javax.ejb.Stateless;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 /**
  * Created by Christoph Kiser on 03.01.2017.
  */
+
+@Stateless
 public class IpAnalyzer {
 
     public String checkRange(String ipString) {

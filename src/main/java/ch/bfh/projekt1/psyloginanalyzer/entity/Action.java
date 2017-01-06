@@ -9,15 +9,19 @@ import java.util.Date;
 @Entity
 @Table(name = "actions")
 public class Action {
+
     @Id
+    private long id;
+
     @Column(name = "time_stamp")
     private Date actionTimeStamp;
+
     @ManyToOne(optional = false)
-    @JoinColumn(name="session_id",referencedColumnName="id")
+    @JoinColumn(name="session_id")
     private Session session;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name="action_type_id",referencedColumnName="id")
+    @JoinColumn(name="action_type_id")
     private ActionType actionType;
 
 }

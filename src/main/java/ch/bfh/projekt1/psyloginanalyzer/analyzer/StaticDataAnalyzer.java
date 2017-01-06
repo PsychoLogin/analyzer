@@ -16,7 +16,6 @@ public class StaticDataAnalyzer {
     private static final int MINIMUM_NUMBER_OF_LOGINS = 5;
     private static final int MINIMAL_USAGE_OF_CURRENTY_USED = 20;
     private static final Logger LOGGER = Logger.getLogger(StaticDataAnalyzer.class.getSimpleName());
-    public static final int PENALTY_LIMIT = 30;
 
     @Inject
     UserBehaviorAnalyser userBehaviorAnalyser;
