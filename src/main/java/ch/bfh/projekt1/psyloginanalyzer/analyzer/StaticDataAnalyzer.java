@@ -1,12 +1,12 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
 import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
-import java.util.logging.Level;
 
 /**
  * Created by jan on 03.12.16.

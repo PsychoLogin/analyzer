@@ -3,7 +3,7 @@ package ch.bfh.projekt1.psyloginanalyzer.boundry;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.UserBehaviorAnalyser;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
@@ -15,7 +15,7 @@ public class AnalyseResource {
     @Inject
     UserBehaviorAnalyser dataAnalyzer;
 
-    @GET
+    @POST
     public void analyseLogin() {
         dataAnalyzer.getUserBehavior("","");
     }
