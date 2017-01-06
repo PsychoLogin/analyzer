@@ -100,7 +100,6 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
     }
 
-    @Ignore("kesso-singleLogin.csv not in resources available")
     @Test
     public void testsingleLoginkesso6() throws Exception{
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
