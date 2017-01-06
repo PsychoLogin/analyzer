@@ -13,7 +13,7 @@ public class Login implements IWritableConvertible {
     private final List<Long> keystrokeTimestampDifferences;
 
     public Login(Collection<Long> keystrokeTimestampDifferences) {
-        this.keystrokeTimestampDifferences = Collections.unmodifiableList(new ArrayList<Long>(keystrokeTimestampDifferences));
+        this.keystrokeTimestampDifferences = Collections.unmodifiableList(new ArrayList<>(keystrokeTimestampDifferences));
     }
 
     public List<Long> getKeystrokeTimestamps() {
@@ -22,7 +22,7 @@ public class Login implements IWritableConvertible {
 
     @Override
     public List<Writable> toWritable() {
-        return keystrokeTimestampDifferences.stream().map(l -> new LongWritable(l)).collect(Collectors.toList());
+        return keystrokeTimestampDifferences.stream().map(LongWritable::new).collect(Collectors.toList());
     }
 
     @Override
