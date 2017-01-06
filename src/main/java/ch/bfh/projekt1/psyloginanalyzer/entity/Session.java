@@ -26,8 +26,7 @@ public class Session {
     @JoinColumn(name="blog_user_id")
     private BlogUser blogUser;
 
-    @OneToMany(mappedBy="session",
-            fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="session")
     private List<Action> actions;
 
 }

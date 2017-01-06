@@ -20,7 +20,6 @@ public class ActionType {
     @Column(name = "description")
     private String actionTypeDescription;
 
-    @OneToMany(mappedBy="actionType",
-            fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="actionType")
     private List<Action> actions;
 }

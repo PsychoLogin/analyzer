@@ -20,8 +20,7 @@ public class BlogUser {
     @Column(name = "username")
     private String userName;
 
-    @OneToMany(mappedBy = "blogUser",
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "blogUser")
     private List<Session> sessions;
 
 
