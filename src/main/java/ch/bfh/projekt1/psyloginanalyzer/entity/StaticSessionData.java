@@ -1,8 +1,13 @@
 package ch.bfh.projekt1.psyloginanalyzer.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +20,7 @@ public class StaticSessionData {
 
     @Id
     @Column(name = "session_id")
-    private String sessionId;
+    private long sessionId;
     @Column(name = "os")
     private String operationSystem;
     @Column(name = "lang")
@@ -27,11 +32,16 @@ public class StaticSessionData {
     @Column(name = "referrer")
     private String referrer;
 
-    public String getSessionId() {
+    @OneToOne
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "session_id")
+    private Session session;
+
+    public long getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
+    public void setSessionId(long sessionId) {
         this.sessionId = sessionId;
     }
 

@@ -71,7 +71,7 @@ public class UserBehaviorAnalyserTest {
 
     @Test
     public void getUserBehavior() {
-        UserBehavior user = cut.getUserBehavior("", "");
+        UserBehavior user = cut.getUserBehavior(0L);
         Assert.assertEquals(66, (int)user.getBrowserUsage().getUsagesInPercent().get("IE"));
         Assert.assertEquals(100, (int)user.getLanguageUsage().getUsagesInPercent().get("de"));
         Assert.assertEquals(66, (int)user.getReferrer().getUsagesInPercent().get("google.ch"));

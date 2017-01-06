@@ -16,8 +16,8 @@ public class AnalyseResource {
     UserBehaviorAnalyser dataAnalyzer;
 
     @POST
-    public void analyseLogin() {
-        dataAnalyzer.getUserBehavior("","");
+    public void analyseLogin(Long blogUserId) {
+        dataAnalyzer.getUserBehavior(blogUserId);
     }
 
 }

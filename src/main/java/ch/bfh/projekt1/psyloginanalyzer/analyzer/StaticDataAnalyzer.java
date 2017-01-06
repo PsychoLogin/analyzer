@@ -33,13 +33,13 @@ public class StaticDataAnalyzer {
      * User analyse is invalid if there is less than 20% usage or less than 5 logins happened
      */
 
-    public boolean analyseUser(String userId, StaticSessionData currentUserSession) {
+    public boolean analyseUser(Long userId, StaticSessionData currentUserSession) {
 
         StaticAnalyseConfig config = configurationService.getConfig();
 
         ipAnalyzer.checkRange(currentUserSession.getLocation());
 
-        UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId, currentUserSession.getOperationSystem());
+        UserBehavior userBehavior = userBehaviorAnalyser.getUserBehavior(userId);
         int loginPenalty = check(currentUserSession.getBrowser(), userBehavior.getBrowserUsage());
         loginPenalty += check(currentUserSession.getLanguage(), userBehavior.getLanguageUsage());
         loginPenalty += check(currentUserSession.getReferrer(), userBehavior.getReferrer());

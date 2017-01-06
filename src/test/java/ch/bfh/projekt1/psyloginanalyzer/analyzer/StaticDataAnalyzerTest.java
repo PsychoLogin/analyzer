@@ -53,9 +53,9 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("de", 100), 100));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("google.ch", 100), 100));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 100));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser(1L, CHROME_DE_GOOGLE_SESSION_DATA));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 100));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 100));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertFalse(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertFalse(cut.analyseUser(1L, CHROME_DE_GOOGLE_SESSION_DATA));
     }
 
     @Test
@@ -77,8 +77,8 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 4));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 4));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 4));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser(1L, CHROME_DE_GOOGLE_SESSION_DATA));
     }
 }
