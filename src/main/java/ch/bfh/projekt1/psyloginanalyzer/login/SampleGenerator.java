@@ -33,15 +33,15 @@ public final class SampleGenerator {
     }
 
     private static List<Long> getMaxVector(final Collection<List<Long>> logins) {
-        return getMinMaxVector(logins, (lhs, rhs) -> Math.max(lhs, rhs), 0);
+        return getMinMaxVector(logins, Math::max, 0);
     }
 
     private static List<Long> getMinVector(final Collection<List<Long>> logins) {
-        return getMinMaxVector(logins, (lhs, rhs) -> Math.min(lhs, rhs), Long.MAX_VALUE);
+        return getMinMaxVector(logins, Math::min, Long.MAX_VALUE);
     }
 
     private static TrainingEntry<Login> trainingEntitySample(final List<? extends RealDistribution> distributions, final boolean result) {
-        return new TrainingEntry<Login>(EntityHelper.createLogin(distributions.stream().map(d -> Math.max((long) Math.round(d.sample()), 0L)).collect(Collectors.toList())), result);
+        return new TrainingEntry<>(EntityHelper.createLogin(distributions.stream().map(d -> Math.max((long) Math.round(d.sample()), 0L)).collect(Collectors.toList())), result);
     }
 
     private static void generatePositive(final List<TrainingEntry<Login>> result, final Collection<List<Long>> logins) {

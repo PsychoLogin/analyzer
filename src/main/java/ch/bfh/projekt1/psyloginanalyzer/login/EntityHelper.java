@@ -1,8 +1,10 @@
 package ch.bfh.projekt1.psyloginanalyzer.login;
 
+import ch.bfh.projekt1.psyloginanalyzer.entity.Action;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import org.datavec.api.writable.LongWritable;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,20 @@ public final class EntityHelper {
         }
         return result;
     }
+
+    public static List<Long> actionDifference(final List<Action> keystrokeTimestamps) {
+        final Iterator<Action> it = keystrokeTimestamps.iterator();
+        if (!it.hasNext()) return Collections.emptyList();
+        long previous = it.next().getTimestamp().getTime();
+        final List<Long> result = new ArrayList<>();
+        while (it.hasNext()) {
+            long current = it.next().getTimestamp().getTime();
+            result.add(current - previous);
+            previous = current;
+        }
+        return result;
+    }
+
 
     public static Login newLogin(final List<Date> keystrokeTimestamps) {
         return createLogin(differences(keystrokeTimestamps));

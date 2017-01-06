@@ -30,6 +30,7 @@ import org.nd4j.linalg.dataset.api.preprocessor.NormalizerMinMaxScaler;
 import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
+import javax.ejb.Stateless;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -39,16 +40,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by othma on 27.11.2016.
  */
+
 public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
     private static final int NUM_CATEGORIES = 2;
     private MultiLayerNetwork network;
     private DataNormalization normalizer;
 
-    private static int getNumberOfInputFeatures(final Collection<TrainingEntry<Login>> trainingDataSet) {
+    private int getNumberOfInputFeatures(final Collection<TrainingEntry<Login>> trainingDataSet) {
         return trainingDataSet.iterator().next().getEntity().getKeystrokeTimestamps().size();
     }
 
-    private static DataSet toDataSet(final Collection<TrainingEntry<Login>> trainingDataSet) {
+    private DataSet toDataSet(final Collection<TrainingEntry<Login>> trainingDataSet) {
         final int numTimestampsDifferences = getNumberOfInputFeatures(trainingDataSet);
         final IterableRecordReader recordReader = new IterableRecordReader(trainingDataSet);
         return new RecordReaderDataSetIterator(recordReader, trainingDataSet.size(), numTimestampsDifferences, NUM_CATEGORIES).next();

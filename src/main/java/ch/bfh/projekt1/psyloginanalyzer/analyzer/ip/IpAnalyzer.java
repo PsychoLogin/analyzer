@@ -48,7 +48,7 @@ public class IpAnalyzer {
                 }
             }
         } catch (InvalidIpException e) {
-            LOGGER.error("Invalid IP", e);
+            LOGGER.error("Invalid IP");
         }
         return null;
     }

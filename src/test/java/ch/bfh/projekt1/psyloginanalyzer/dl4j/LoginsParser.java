@@ -74,7 +74,7 @@ public class LoginsParser {
     }
 
     private List<Login> getTestData() {
-        return getKeystrokeDifferences().stream().map(l -> EntityHelper.createLogin(l)).collect(Collectors.toList());
+        return getKeystrokeDifferences().stream().map(EntityHelper::createLogin).collect(Collectors.toList());
     }
 
     /**

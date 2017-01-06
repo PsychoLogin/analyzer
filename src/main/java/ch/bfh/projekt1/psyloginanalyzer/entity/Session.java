@@ -21,6 +21,8 @@ public class Session {
     @Column(name = "stop")
     private Date session_stop;
 
+    @Column(name = "blog_user_id", insertable = false, updatable = false)
+    private long blogUserId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="blog_user_id")
