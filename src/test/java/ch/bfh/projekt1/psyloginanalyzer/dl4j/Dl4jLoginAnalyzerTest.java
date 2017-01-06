@@ -31,14 +31,22 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(100)));
     }
 
+    private static boolean silentAnalyze(final IAnalyzer<Login> analyzer, final Login login) {
+        try {
+            return analyzer.analyze(login);
+        } catch(final AnalysisException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Test
     public void testKesso6() throws Exception {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
         final List<Login> testData = LoginsParser.getTestData("/kesso-test.csv");
         final List<Login> attackData = LoginsParser.getTestData("/kesso-attack.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
-        final long attackCount = attackData.stream().filter(t -> !analyzer.analyze(t)).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         System.err.println("Testdata kesso: " + testCount + "/" + testData.size());
         System.err.println("AttackData kesso: " + attackCount + "/" + attackData.size());
         Assert.assertTrue((double) testCount / testData.size() > 0.9);
@@ -51,11 +59,11 @@ public class Dl4jLoginAnalyzerTest {
         final List<Login> testData = LoginsParser.getTestData("/gimpel-test.csv");
         final List<Login> attackData = LoginsParser.getTestData("/gimpel-attack.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
-        final long attackCount = attackData.stream().filter(t -> !analyzer.analyze(t)).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         System.err.println("Testdata Gimpel: " + testCount + "/" + testData.size());
         System.err.println("AttackData Gimpel: " + attackCount + "/" + attackData.size());
-        Assert.assertTrue((double) testCount / testData.size() > 0.5);
+        Assert.assertTrue((double) testCount / testData.size() > 0.9);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
     }
 
@@ -65,12 +73,12 @@ public class Dl4jLoginAnalyzerTest {
         final List<Login> testData = LoginsParser.getTestData("/schei2-test.csv");
         final List<Login> attackData = LoginsParser.getTestData("/schei2-attack.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
-        final long attackCount = attackData.stream().filter(t -> !analyzer.analyze(t)).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         System.err.println("Testdata Schei2: " + testCount + "/" + testData.size());
         System.err.println("AttackData Schei2: " + attackCount + "/" + attackData.size());
-        Assert.assertTrue((double) testCount / testData.size() > 0.5);
-        Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
+        Assert.assertTrue((double) testCount / testData.size() > 0.7);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
 
     @Test
@@ -79,12 +87,12 @@ public class Dl4jLoginAnalyzerTest {
         final List<Login> testData = LoginsParser.getTestData("/pipo-test.csv");
         final List<Login> attackData = LoginsParser.getTestData("/pipo-attack.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
-        final long attackCount = attackData.stream().filter(t -> !analyzer.analyze(t)).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         System.err.println("Testdata Pipo: " + testCount + "/" + testData.size());
         System.err.println("AttackData Pipo: " + attackCount + "/" + attackData.size());
-        Assert.assertTrue((double) testCount / testData.size() > 0.5);
-        Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
+        Assert.assertTrue((double) testCount / testData.size() > 0.6);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
     @Test
     public void testsophiesong() throws Exception {
@@ -92,12 +100,12 @@ public class Dl4jLoginAnalyzerTest {
         final List<Login> testData = LoginsParser.getTestData("/sophie-test.csv");
         final List<Login> attackData = LoginsParser.getTestData("/sophie-attack.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
-        final long attackCount = attackData.stream().filter(t -> !analyzer.analyze(t)).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         System.err.println("Testdata Sophie: " + testCount + "/" + testData.size());
         System.err.println("AttackData Sophie: " + attackCount + "/" + attackData.size());
-        Assert.assertTrue((double) testCount / testData.size() > 0.5);
-        Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
+        Assert.assertTrue((double) testCount / testData.size() > 0.7);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
 
     @Test
@@ -105,7 +113,7 @@ public class Dl4jLoginAnalyzerTest {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
         final List<Login> testData = LoginsParser.getTestData("/kesso-singleLogin.csv");
         analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(analyzer::analyze).count();
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
         Assert.assertTrue((double) testCount == 1);
     }
 }

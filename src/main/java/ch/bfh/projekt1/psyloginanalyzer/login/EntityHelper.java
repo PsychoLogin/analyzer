@@ -34,16 +34,7 @@ public final class EntityHelper {
     }
 
     public static List<Long> actionDifference(final List<Action> keystrokeTimestamps) {
-        final Iterator<Action> it = keystrokeTimestamps.iterator();
-        if (!it.hasNext()) return Collections.emptyList();
-        long previous = it.next().getTimestamp().getTime();
-        final List<Long> result = new ArrayList<>();
-        while (it.hasNext()) {
-            long current = it.next().getTimestamp().getTime();
-            result.add(current - previous);
-            previous = current;
-        }
-        return result;
+        return differences(keystrokeTimestamps.stream().map(a -> a.getTimestamp()).collect(Collectors.toList()));
     }
 
 

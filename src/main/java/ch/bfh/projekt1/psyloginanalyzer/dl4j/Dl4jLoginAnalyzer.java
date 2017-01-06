@@ -58,50 +58,58 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
 
     public void train(Collection<TrainingEntry<Login>> trainingDataSet) throws TrainingException {
         if (trainingDataSet.isEmpty()) return;
-        final DataSet dataSet = toDataSet(trainingDataSet);
-        normalizer = new NormalizerStandardize();
-        normalizer.fit(dataSet);
-        normalizer.transform(dataSet);
-        final DataSetIterator dataSetIterator = new ExistingDataSetIterator(dataSet);
-        final MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
-                .seed(6)
-                .iterations(1)
-                .activation("tanh")
-                .weightInit(WeightInit.XAVIER)
-                .learningRate(0.1)
-                .regularization(true).l2(1e-4)
-                .list()
-                .layer(0, new DenseLayer.Builder()
-                        .nIn(getNumberOfInputFeatures(trainingDataSet))
-                        .nOut(9)
-                        .build())
-                .layer(1, new DenseLayer.Builder()
-                        .nIn(9)
-                        .nOut(9)
-                        .build())
-                .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .activation("softmax")
-                        .nIn(9)
-                        .nOut(NUM_CATEGORIES).build())
-                .backprop(true).pretrain(false)
-                .build();
-        network = new MultiLayerNetwork(configuration);
-        final EarlyStoppingConfiguration esConf = new EarlyStoppingConfiguration.Builder()
-                .epochTerminationConditions(new MaxEpochsTerminationCondition(20))
-                .iterationTerminationConditions(new MaxTimeIterationTerminationCondition(20, TimeUnit.MINUTES))
-                .scoreCalculator(new DataSetLossCalculator(dataSetIterator, true))
-                .evaluateEveryNEpochs(1)
-                .modelSaver(new InMemoryModelSaver())
-                .build();
-        final EarlyStoppingTrainer trainer = new EarlyStoppingTrainer(esConf, network, dataSetIterator);
-        final EarlyStoppingResult<MultiLayerNetwork> result = trainer.fit();
-        network = result.getBestModel();
+        try {
+            final DataSet dataSet = toDataSet(trainingDataSet);
+            normalizer = new NormalizerStandardize();
+            normalizer.fit(dataSet);
+            normalizer.transform(dataSet);
+            final DataSetIterator dataSetIterator = new ExistingDataSetIterator(dataSet);
+            final MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
+                    .seed(6)
+                    .iterations(1)
+                    .activation("tanh")
+                    .weightInit(WeightInit.XAVIER)
+                    .learningRate(0.1)
+                    .regularization(true).l2(1e-4)
+                    .list()
+                    .layer(0, new DenseLayer.Builder()
+                            .nIn(getNumberOfInputFeatures(trainingDataSet))
+                            .nOut(9)
+                            .build())
+                    .layer(1, new DenseLayer.Builder()
+                            .nIn(9)
+                            .nOut(9)
+                            .build())
+                    .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                            .activation("softmax")
+                            .nIn(9)
+                            .nOut(NUM_CATEGORIES).build())
+                    .backprop(true).pretrain(false)
+                    .build();
+            network = new MultiLayerNetwork(configuration);
+            final EarlyStoppingConfiguration esConf = new EarlyStoppingConfiguration.Builder()
+                    .epochTerminationConditions(new MaxEpochsTerminationCondition(20))
+                    .iterationTerminationConditions(new MaxTimeIterationTerminationCondition(20, TimeUnit.MINUTES))
+                    .scoreCalculator(new DataSetLossCalculator(dataSetIterator, true))
+                    .evaluateEveryNEpochs(1)
+                    .modelSaver(new InMemoryModelSaver())
+                    .build();
+            final EarlyStoppingTrainer trainer = new EarlyStoppingTrainer(esConf, network, dataSetIterator);
+            final EarlyStoppingResult<MultiLayerNetwork> result = trainer.fit();
+            network = result.getBestModel();
+        } catch (final Exception e) {
+            throw new TrainingException(e);
+        }
     }
 
-    public boolean analyze(final Login login) {
-        final DataSet testDataSet = toDataSet(Collections.singleton(new TrainingEntry<>(login, false)));
-        normalizer.transform(testDataSet);
-        final INDArray output = network.output(testDataSet.getFeatureMatrix());
-        return output.getDouble(1) > output.getDouble(0);
+    public boolean analyze(final Login login) throws AnalysisException {
+        try {
+            final DataSet testDataSet = toDataSet(Collections.singleton(new TrainingEntry<>(login, false)));
+            normalizer.transform(testDataSet);
+            final INDArray output = network.output(testDataSet.getFeatureMatrix());
+            return output.getDouble(1) > output.getDouble(0);
+        } catch (final Exception e) {
+            throw new AnalysisException(e);
+        }
     }
 }

@@ -8,12 +8,15 @@ import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import ch.bfh.projekt1.psyloginanalyzer.login.AnalysisException;
 import ch.bfh.projekt1.psyloginanalyzer.login.LoginDataProcessor;
 import ch.bfh.projekt1.psyloginanalyzer.login.TrainingException;
+import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Jan on 17.12.2016.
@@ -29,26 +32,27 @@ public class AnalyseResource {
     @Inject
     LoginDataProcessor loginDataProcessor;
 
+    private ExecutorService threadpool = Executors.newCachedThreadPool();
+    private static final Logger logger = Logger.getLogger(AnalyseResource.class);
+
     @POST
     public Response analyseLogin(LoginParameter loginParameter) {
-        new Thread(() -> staticDataAnalyzer.analyseUser(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId())).start();
-        new Thread(() -> {
-
+        threadpool.execute(() -> staticDataAnalyzer.analyseUser(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId()));
+        threadpool.execute(() -> {
             Collection<TrainingEntry<Login>> trainSet = loginDataProcessor.createTrainSet(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId());
             Login testSet = loginDataProcessor.getTestSet(loginParameter.getCurrentSessionId());
 
-
             try {
                 loginAnalyzer.train(trainSet);
-            } catch (TrainingException e) {
-                e.printStackTrace();
+            } catch (final TrainingException e) {
+                logger.error("training-error", e);
             }
             try {
                 loginAnalyzer.analyze(testSet);
-            } catch (AnalysisException e) {
-                e.printStackTrace();
+            } catch (final AnalysisException e) {
+                logger.error("analysis-error", e);
             }
-        }).start();
+        });
         return Response.accepted().build();
     }
 
