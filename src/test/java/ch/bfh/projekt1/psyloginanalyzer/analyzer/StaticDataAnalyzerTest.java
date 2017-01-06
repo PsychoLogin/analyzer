@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
 import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
@@ -8,9 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.security.auth.login.Configuration;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,6 +50,17 @@ public class StaticDataAnalyzerTest {
         mockConfig.setPenaltyWarningLevel(20);
         mockConfig.setMinimumNumberLogins(5);
         when(cut.configurationService.getConfig()).thenReturn(mockConfig);
+
+        cut.emf = mock(EntityManagerFactory.class);
+        EntityManager em = mock(EntityManager.class);
+        when(cut.emf.createEntityManager()).thenReturn(em);
+
+
+        TypedQuery mockedQuery = mock(TypedQuery.class);
+        when(mockedQuery.getSingleResult()).thenReturn(CHROME_DE_GOOGLE_SESSION_DATA);
+        when(mockedQuery.setParameter(anyString(), anyLong())).thenReturn(mockedQuery);
+
+        when(em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
     }
 
     @Test
@@ -53,9 +70,9 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("de", 100), 100));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("google.ch", 100), 100));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 100));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser(1L, 1L));
     }
 
     @Test
@@ -65,9 +82,9 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 100));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 100));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 100));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertFalse(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertFalse(cut.analyseUser(1L, 1L));
     }
 
     @Test
@@ -77,8 +94,8 @@ public class StaticDataAnalyzerTest {
         userBehavior.setLanguageUsage(new UsageStatistics(Collections.singletonMap("fr", 100), 4));
         userBehavior.setLocation(new UsageStatistics(Collections.singletonMap("MyProvider", 100), 4));
         userBehavior.setReferrer(new UsageStatistics(Collections.singletonMap("facebook.com", 100), 4));
-        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyString(), Mockito.anyString())).thenReturn(userBehavior);
+        when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
-        Assert.assertTrue(cut.analyseUser("userID", CHROME_DE_GOOGLE_SESSION_DATA));
+        Assert.assertTrue(cut.analyseUser(1L, 1L));
     }
 }

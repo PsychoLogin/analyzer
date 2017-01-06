@@ -1,4 +1,6 @@
-package ch.bfh.projekt1.psyloginanalyzer.analyzer;
+package ch.bfh.projekt1.psyloginanalyzer.analyzer.ip;
+
+import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAddress;
 
 /**
  * Created by Christoph Kiser on 11.12.2016.

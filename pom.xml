@@ -22,11 +22,12 @@
     </properties>
 
     <groupId>ch.bfh.projekt1</groupId>
-    <artifactId>psylogin-analyzer</artifactId>
+    <artifactId>analyzer</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>

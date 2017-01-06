@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,10 +10,10 @@ import org.mockito.Mockito;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,16 +66,18 @@ public class UserBehaviorAnalyserTest {
 
         TypedQuery mockedQuery = mock(TypedQuery.class);
         when(mockedQuery.getResultList()).thenReturn(results);
-        when(em.createQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
+        when(mockedQuery.setParameter(anyString(), anyLong())).thenReturn(mockedQuery);
+
+        when(em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
     }
 
     @Test
     public void getUserBehavior() {
-        UserBehavior user = cut.getUserBehavior("", "");
-        Assert.assertEquals(66, (int)user.getBrowserUsage().getUsagesInPercent().get("IE"));
-        Assert.assertEquals(100, (int)user.getLanguageUsage().getUsagesInPercent().get("de"));
-        Assert.assertEquals(66, (int)user.getReferrer().getUsagesInPercent().get("google.ch"));
-        Assert.assertEquals(100, (int)user.getLocation().getUsagesInPercent().get("MyProvider"));
+        UserBehavior user = cut.getUserBehavior(0L, 0L);
+        Assert.assertEquals(66, (int) user.getBrowserUsage().getUsagesInPercent().get("IE"));
+        Assert.assertEquals(100, (int) user.getLanguageUsage().getUsagesInPercent().get("de"));
+        Assert.assertEquals(66, (int) user.getReferrer().getUsagesInPercent().get("google.ch"));
+        Assert.assertEquals(100, (int) user.getLocation().getUsagesInPercent().get("MyProvider"));
         Assert.assertEquals(3, user.getLanguageUsage().getNumberOfLogins());
         Assert.assertEquals(3, user.getBrowserUsage().getNumberOfLogins());
         Assert.assertEquals(3, user.getReferrer().getNumberOfLogins());

@@ -2,6 +2,7 @@ package ch.bfh.projekt1.psyloginanalyzer.entity;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by othma on 02.01.2017.
@@ -9,12 +10,16 @@ import java.util.Collection;
 @Entity
 @Table(name = "action_types")
 public class ActionType {
+
     @Id
+    private long id;
+
     @Column(name = "title")
     private String actionTypeTitle;
+
     @Column(name = "description")
     private String actionTypeDescription;
-    @OneToMany(mappedBy="actionType",targetEntity=Action.class,
-            fetch=FetchType.EAGER)
-    private Collection actions;
+
+    @OneToMany(mappedBy="actionType")
+    private List<Action> actions;
 }
