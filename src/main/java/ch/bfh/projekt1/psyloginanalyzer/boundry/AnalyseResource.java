@@ -48,7 +48,8 @@ public class AnalyseResource {
                 logger.error("training-error", e);
             }
             try {
-                loginAnalyzer.analyze(testSet);
+                boolean test = loginAnalyzer.analyze(testSet);
+                logger.debug(test);
             } catch (final AnalysisException e) {
                 logger.error("analysis-error", e);
             }

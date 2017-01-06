@@ -19,7 +19,6 @@ import java.util.List;
  * Created by othma on 27.11.2016.
  */
 
-@Ignore("Das geit zlang")
 public class Dl4jLoginAnalyzerTest {
     private final ITrainableAnalyzer analyzer = new Dl4jLoginAnalyzer();
 

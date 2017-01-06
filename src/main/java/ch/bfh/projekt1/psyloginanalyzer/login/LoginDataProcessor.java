@@ -9,10 +9,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -36,9 +40,14 @@ public class LoginDataProcessor {
         Map<Long, List<Action>> loginsPerSession = resultList.stream()
                 .collect(Collectors.groupingBy(Action::getSessionId));
 
+        int min = loginsPerSession.values()
+                .stream()
+                .min(Comparator.comparingInt(List::size))
+                .orElse(Collections.emptyList()).size();
 
         return loginsPerSession.values().stream()
                 .map(EntityHelper::actionDifference)
+                .filter(a -> a.size() <= min)
                 .map(EntityHelper::createLogin)
                 .map(login -> new TrainingEntry<>(login, true))
                 .collect(Collectors.toList());
