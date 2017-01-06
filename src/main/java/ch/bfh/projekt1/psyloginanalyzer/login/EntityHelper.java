@@ -14,7 +14,7 @@ public final class EntityHelper {
     }
 
     /**
-     *
+     * Transform timestamps to latencies
      * @param keystrokeTimestamps
      * @return
      */

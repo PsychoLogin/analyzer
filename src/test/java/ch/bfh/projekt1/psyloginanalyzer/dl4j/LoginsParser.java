@@ -28,6 +28,11 @@ public class LoginsParser {
     private static final int SESSION_ID_INDEX = 3;
     private final Map<Integer, List<Date>> loginsPerSession = new HashMap<>();
 
+    /**
+     * Create map of session ids to keystroke timestamps
+     * @param resourcePath
+     * @throws IOException
+     */
     private LoginsParser(final String resourcePath) throws IOException {
         try(final BufferedReader reader = new BufferedReader(new InputStreamReader(LoginsParser.class.getResourceAsStream(resourcePath)))) {
             for (String line; (line = reader.readLine()) != null;) {
@@ -46,6 +51,10 @@ public class LoginsParser {
         loginsPerSession.entrySet().forEach(e -> Collections.sort(e.getValue()));
     }
 
+    /**
+     * Transform timestamps to list of lists of latencies (= list of logins)
+     * @return
+     */
     private Collection<List<Long>> getKeystrokeDifferences() {
         return loginsPerSession.values().stream().map(EntityHelper::differences).collect(Collectors.toList());
     }

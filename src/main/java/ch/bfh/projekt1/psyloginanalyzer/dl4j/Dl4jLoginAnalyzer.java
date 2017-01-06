@@ -96,7 +96,7 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
         network = result.getBestModel();
     }
 
-    public boolean analyze(final Login login) throws AnalysisException {
+    public boolean analyze(final Login login) {
         final DataSet testDataSet = toDataSet(Collections.singleton(new TrainingEntry<>(login, false)));
         normalizer.transform(testDataSet);
         final INDArray output = network.output(testDataSet.getFeatureMatrix());
