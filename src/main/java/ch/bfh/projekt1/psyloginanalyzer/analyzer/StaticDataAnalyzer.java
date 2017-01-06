@@ -6,6 +6,7 @@ import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 import org.apache.log4j.Logger;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,6 +16,8 @@ import javax.persistence.TypedQuery;
 /**
  * Created by jan on 03.12.16.
  */
+
+@Stateless
 public class StaticDataAnalyzer {
 
     private static final int MINIMUM_NUMBER_OF_LOGINS = 5;

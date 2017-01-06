@@ -1,6 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.boundry;
 
-import ch.bfh.projekt1.psyloginanalyzer.analyzer.UserBehaviorAnalyser;
+import ch.bfh.projekt1.psyloginanalyzer.analyzer.StaticDataAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.LoginParameter;
 
 import javax.inject.Inject;
@@ -15,11 +15,11 @@ import javax.ws.rs.core.Response;
 public class AnalyseResource {
 
     @Inject
-    UserBehaviorAnalyser dataAnalyzer;
+    StaticDataAnalyzer staticDataAnalyzer;
 
     @POST
     public Response analyseLogin(LoginParameter loginParameter) {
-        new Thread(() -> dataAnalyzer.getUserBehavior(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId())).start();
+        new Thread(() -> staticDataAnalyzer.analyseUser(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId())).start();
         return Response.accepted().build();
     }
 
