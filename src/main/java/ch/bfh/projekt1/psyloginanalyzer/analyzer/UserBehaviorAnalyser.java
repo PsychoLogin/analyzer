@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.alert.AlertService;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
@@ -26,6 +27,8 @@ public class UserBehaviorAnalyser {
     @Inject
     IpAnalyzer ipAnalyzer;
 
+
+
     public UserBehavior getUserBehavior(long currentSessionId, long blogUserId) {
 
         EntityManager entityManager = emf.createEntityManager();
@@ -39,6 +42,7 @@ public class UserBehaviorAnalyser {
         user.setBrowserUsage(getUsageInPercent(resultList, StaticSessionData::getBrowser));
         user.setReferrer(getUsageInPercent(resultList, StaticSessionData::getReferrer));
         user.setLocation(getLocationUsageInPercent(resultList));
+        entityManager.close();
         return user;
     }
 

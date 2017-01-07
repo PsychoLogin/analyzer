@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.alert.AlertService;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
 import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
@@ -36,6 +37,9 @@ public class StaticDataAnalyzer {
     @Inject
     ConfigurationService configurationService;
 
+    @Inject
+    AlertService alertService;
+
     /**
      *
      * @param currentUserSessionId
@@ -61,8 +65,14 @@ public class StaticDataAnalyzer {
         loginPenalty += check(ipAnalyzer.checkRange(currentUserSession.getLocation()), userBehavior.getLocation());
         boolean loginAllowed = loginPenalty < config.getPenaltyErrorLevel();
 
+        entityManager.close();
+
         if(LOGGER.isDebugEnabled()) {
             LOGGER.debug("User can Login = " + loginAllowed+ " ->> Because of "+ loginPenalty +" LIMIT: "+ config.getPenaltyErrorLevel());
+        }
+
+        if(!loginAllowed) {
+            alertService.createAlert(blogUserId, this.getClass().getSimpleName(), "Error");
         }
 
         return loginAllowed;

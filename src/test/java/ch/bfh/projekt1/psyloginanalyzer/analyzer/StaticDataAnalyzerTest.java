@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
+import ch.bfh.projekt1.psyloginanalyzer.alert.AlertService;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.config.ConfigurationService;
 import ch.bfh.projekt1.psyloginanalyzer.config.StaticAnalyseConfig;
@@ -18,8 +19,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Jan on 10.12.2016.
@@ -55,6 +55,8 @@ public class StaticDataAnalyzerTest {
         EntityManager em = mock(EntityManager.class);
         when(cut.emf.createEntityManager()).thenReturn(em);
 
+        cut.alertService = mock(AlertService.class);
+
 
         TypedQuery mockedQuery = mock(TypedQuery.class);
         when(mockedQuery.getSingleResult()).thenReturn(CHROME_DE_GOOGLE_SESSION_DATA);
@@ -73,6 +75,8 @@ public class StaticDataAnalyzerTest {
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
         Assert.assertTrue(cut.analyseUser(1L, 1L));
+        verify(cut.alertService, times(0)).createAlert(anyLong(), anyString(), anyString());
+
     }
 
     @Test
@@ -85,6 +89,7 @@ public class StaticDataAnalyzerTest {
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
         Assert.assertFalse(cut.analyseUser(1L, 1L));
+        verify(cut.alertService, times(1)).createAlert(anyLong(), anyString(), anyString());
     }
 
     @Test
@@ -97,5 +102,7 @@ public class StaticDataAnalyzerTest {
         when(cut.userBehaviorAnalyser.getUserBehavior(Mockito.anyLong(), Mockito.anyLong())).thenReturn(userBehavior);
 
         Assert.assertTrue(cut.analyseUser(1L, 1L));
+        verify(cut.alertService, times(0)).createAlert(anyLong(), anyString(), anyString());
+
     }
 }
