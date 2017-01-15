@@ -2,33 +2,25 @@
              xmlns="http://java.sun.com/xml/ns/persistence"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
-    <persistence-unit name="psylogin" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="psylogin">
         <description>
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://psylgn2016.northeurope.cloudapp.azure.com:3306/psylogincapture" />
-            <property name="javax.persistence.jdbc.user" value="psyloginsvc" />
-            <property name="javax.persistence.jdbc.password" value="P$ych0l0g!nFtw" />
+        <jta-data-source>java:/psylogin</jta-data-source>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+        <properties>
             <property name="hibernate.show_sql" value="true" />
             <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
         </properties>
     </persistence-unit>
-    <persistence-unit name="psylogin_config" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="psylogin_config">
         <description>
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:/psylogin_config</jta-data-source>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://psylgn2016.northeurope.cloudapp.azure.com:3306/psyloginconfig" />
-            <property name="javax.persistence.jdbc.user" value="psyloginsvc" />
-            <property name="javax.persistence.jdbc.password" value="P$ych0l0g!nFtw" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="true" />
             <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
         </properties>

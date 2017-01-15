@@ -51,9 +51,7 @@ public class StaticDataAnalyzerTest {
         mockConfig.setMinimumNumberLogins(5);
         when(cut.configurationService.getConfig()).thenReturn(mockConfig);
 
-        cut.emf = mock(EntityManagerFactory.class);
-        EntityManager em = mock(EntityManager.class);
-        when(cut.emf.createEntityManager()).thenReturn(em);
+        cut.em =  mock(EntityManager.class);
 
         cut.alertService = mock(AlertService.class);
 
@@ -62,7 +60,7 @@ public class StaticDataAnalyzerTest {
         when(mockedQuery.getSingleResult()).thenReturn(CHROME_DE_GOOGLE_SESSION_DATA);
         when(mockedQuery.setParameter(anyString(), anyLong())).thenReturn(mockedQuery);
 
-        when(em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
+        when(cut.em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
     }
 
     @Test

@@ -9,8 +9,10 @@ import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 
@@ -25,8 +27,8 @@ public class StaticDataAnalyzer {
     private static final int MINIMAL_USAGE_OF_CURRENTY_USED = 20;
     private static final Logger LOGGER = Logger.getLogger(StaticDataAnalyzer.class.getSimpleName());
 
-    @PersistenceUnit(unitName = "psylogin")
-    EntityManagerFactory emf;
+    @PersistenceContext(unitName = "psylogin")
+    EntityManager em;
     
     @Inject
     UserBehaviorAnalyser userBehaviorAnalyser;
@@ -49,8 +51,7 @@ public class StaticDataAnalyzer {
      */
 
     public boolean analyseUser(long currentUserSessionId, long blogUserId) {
-        EntityManager entityManager = emf.createEntityManager();
-        TypedQuery<StaticSessionData> namedQuery = entityManager.createNamedQuery(StaticSessionData.GET_CURRENT_SESSION, StaticSessionData.class);
+        TypedQuery<StaticSessionData> namedQuery = em.createNamedQuery(StaticSessionData.GET_CURRENT_SESSION, StaticSessionData.class);
         namedQuery.setParameter("currentSessionId", currentUserSessionId);
         StaticSessionData currentUserSession = namedQuery.getSingleResult();
 
@@ -65,7 +66,6 @@ public class StaticDataAnalyzer {
         loginPenalty += check(ipAnalyzer.checkRange(currentUserSession.getLocation()), userBehavior.getLocation());
         boolean loginAllowed = loginPenalty < config.getPenaltyErrorLevel();
 
-        entityManager.close();
 
         if(LOGGER.isDebugEnabled()) {
             LOGGER.debug("User can Login = " + loginAllowed+ " ->> Because of "+ loginPenalty +" LIMIT: "+ config.getPenaltyErrorLevel());

@@ -1,7 +1,5 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
-import java.util.Map;
-
 /**
  * Created by jan on 03.12.16.
  */

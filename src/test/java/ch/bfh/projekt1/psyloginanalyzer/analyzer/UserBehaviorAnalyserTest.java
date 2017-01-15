@@ -32,9 +32,7 @@ public class UserBehaviorAnalyserTest {
         cut.ipAnalyzer = mock(IpAnalyzer.class);
         when(cut.ipAnalyzer.checkRange(anyString())).thenReturn("MyProvider");
 
-        cut.emf = mock(EntityManagerFactory.class);
-        EntityManager em = mock(EntityManager.class);
-        when(cut.emf.createEntityManager()).thenReturn(em);
+        cut.em = mock(EntityManager.class);
 
         List<StaticSessionData> results = new ArrayList<>();
         results.add(new StaticSessionData.Builder()
@@ -68,7 +66,7 @@ public class UserBehaviorAnalyserTest {
         when(mockedQuery.getResultList()).thenReturn(results);
         when(mockedQuery.setParameter(anyString(), anyLong())).thenReturn(mockedQuery);
 
-        when(em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
+        when(cut.em.createNamedQuery(Mockito.anyString(), Mockito.any())).thenReturn(mockedQuery);
     }
 
     @Test

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ import java.util.function.Function;
 @Stateless
 public class UserBehaviorAnalyser {
 
-    @PersistenceUnit(unitName = "psylogin")
-    EntityManagerFactory emf;
+    @PersistenceContext(unitName = "psylogin")
+    EntityManager em;
 
     @Inject
     IpAnalyzer ipAnalyzer;
@@ -31,9 +32,8 @@ public class UserBehaviorAnalyser {
 
     public UserBehavior getUserBehavior(long currentSessionId, long blogUserId) {
 
-        EntityManager entityManager = emf.createEntityManager();
 
-        TypedQuery<StaticSessionData> query = entityManager.createNamedQuery(StaticSessionData.GET_OLD_SESSIONS, StaticSessionData.class);
+        TypedQuery<StaticSessionData> query = em.createNamedQuery(StaticSessionData.GET_OLD_SESSIONS, StaticSessionData.class);
         query.setParameter("blogUserId", blogUserId);
         query.setParameter("currentSessionId", currentSessionId);
         List<StaticSessionData> resultList = query.getResultList();
@@ -42,7 +42,6 @@ public class UserBehaviorAnalyser {
         user.setBrowserUsage(getUsageInPercent(resultList, StaticSessionData::getBrowser));
         user.setReferrer(getUsageInPercent(resultList, StaticSessionData::getReferrer));
         user.setLocation(getLocationUsageInPercent(resultList));
-        entityManager.close();
         return user;
     }
 
