@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -26,29 +25,37 @@ public class IpAnalyzer {
 
             ArrayList<IpRange> ipRanges = new ArrayList<>();
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(new File(this.getClass().getResource("/ip/ipProvider.csv").getFile())))) {
-                String curLine;
-                while ((curLine = reader.readLine()) != null) {
-                    String[] part = curLine.trim().split(",");
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("ip/ipProvider.csv")))) {
+
+                br.lines().forEach(s -> {
+                    String[] part = s.split(",");
                     if (part.length > 4) {
-                        IpAddress ipFrom = handler.convertToIp(part[0]);
-                        IpAddress ipTo = handler.convertToIp(part[1]);
+                        IpAddress ipFrom = null;
+                        IpAddress ipTo = null;
+                        try {
+                            ipFrom = handler.convertToIp(part[0]);
+                            ipTo = handler.convertToIp(part[1]);
+                        } catch (InvalidIpException e) {
+                            e.printStackTrace();
+                        }
+
                         String providerName = part[4];
                         ipRanges.add(new IpRange(ipFrom, ipTo, providerName));
-
                     }
-                }
+                });
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             for (IpRange currentRange : ipRanges) {
                 if (currentRange.containsIp(ip)) {
                     return currentRange.getProviderName();
                 }
             }
+
         } catch (InvalidIpException e) {
-            LOGGER.error("Invalid IP");
+            e.printStackTrace();
         }
         return null;
     }

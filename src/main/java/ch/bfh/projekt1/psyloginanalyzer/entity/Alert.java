@@ -40,6 +40,7 @@ public class Alert {
             alert.producer = this.producer;
             alert.severity = this.severity;
             alert.blogUserId = this.blogUserId;
+            alert.timeStamp = new Date();
             return alert;
         }
 
