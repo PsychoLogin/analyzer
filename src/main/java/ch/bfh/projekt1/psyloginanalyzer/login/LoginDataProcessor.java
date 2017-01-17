@@ -7,6 +7,7 @@ import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
@@ -26,12 +27,11 @@ import java.util.stream.Collectors;
 @Stateless
 public class LoginDataProcessor {
 
-    @PersistenceUnit(unitName = "psylogin")
-    EntityManagerFactory emf;
+    @PersistenceContext(unitName = "psylogin")
+    EntityManager em;
 
     public Collection<TrainingEntry<Login>> createTrainSet(long currentSessionId, long blogUserId) {
-        EntityManager entityManager = emf.createEntityManager();
-        TypedQuery<Action> getTrainingData = entityManager.createNamedQuery(Action.GET_TRAINING_DATA, Action.class);
+        TypedQuery<Action> getTrainingData = em.createNamedQuery(Action.GET_TRAINING_DATA, Action.class);
         getTrainingData.setParameter("currentSessionId", currentSessionId);
         getTrainingData.setParameter("blogUserId", blogUserId);
 
@@ -54,8 +54,7 @@ public class LoginDataProcessor {
     }
 
     public Login getTestSet(long currentSessionId) {
-        EntityManager entityManager = emf.createEntityManager();
-        TypedQuery<Action> getTrainingData = entityManager.createNamedQuery(Action.GET_TEST_DATA, Action.class);
+        TypedQuery<Action> getTrainingData = em.createNamedQuery(Action.GET_TEST_DATA, Action.class);
         getTrainingData.setParameter("currentSessionId", currentSessionId);
         List<Action> resultList = getTrainingData.getResultList();
 

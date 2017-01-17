@@ -14,15 +14,4 @@
             <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
         </properties>
     </persistence-unit>
-    <persistence-unit name="psylogin_config">
-        <description>
-            Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
-        </description>
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <jta-data-source>java:/psylogin_config</jta-data-source>
-        <properties>
-            <property name="hibernate.show_sql" value="true" />
-            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
-        </properties>
-    </persistence-unit>
 </persistence>
