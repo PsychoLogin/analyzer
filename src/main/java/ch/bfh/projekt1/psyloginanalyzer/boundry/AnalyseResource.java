@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.psyloginanalyzer.boundry;
 
+import ch.bfh.projekt1.psyloginanalyzer.alert.AlertService;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.StaticDataAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.dl4j.Dl4jLoginAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
@@ -26,6 +27,8 @@ public class AnalyseResource {
 
     @Inject
     StaticDataAnalyzer staticDataAnalyzer;
+    @Inject
+    AlertService alertService;
 
     Dl4jLoginAnalyzer loginAnalyzer = new Dl4jLoginAnalyzer();
 
@@ -49,6 +52,9 @@ public class AnalyseResource {
             }
             try {
                 boolean test = loginAnalyzer.analyze(testSet);
+                if (!test){
+                    alertService.createAlert(loginParameter.getBlogUserId(), this.getClass().getSimpleName(), "NN_Warning");
+                }
                 logger.debug(test);
             } catch (final AnalysisException e) {
                 logger.error("analysis-error", e);

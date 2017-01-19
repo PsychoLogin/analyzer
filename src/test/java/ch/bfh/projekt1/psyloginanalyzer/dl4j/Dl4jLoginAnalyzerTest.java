@@ -106,6 +106,19 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) testCount / testData.size() > 0.7);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
+    @Test
+    public void testkaltz() throws Exception {
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/jwkaltz-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/jwkaltz-test.csv");
+        final List<Login> attackData = LoginsParser.getTestData("/jwkaltz-attack.csv");
+        analyzer.train(trainingData);
+        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
+        System.err.println("Testdata Kaltz: " + testCount + "/" + testData.size());
+        System.err.println("AttackData Kaltz: " + attackCount + "/" + attackData.size());
+        Assert.assertTrue((double) testCount / testData.size() > 0.7);
+        Assert.assertTrue((double) attackCount / attackData.size() > 0.6);
+    }
 
     @Test
     public void testsingleLoginkesso6() throws Exception{
@@ -113,6 +126,14 @@ public class Dl4jLoginAnalyzerTest {
         final List<Login> testData = LoginsParser.getTestData("/kesso-singleLogin.csv");
         analyzer.train(trainingData);
         final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
+        Assert.assertTrue((double) testCount == 1);
+    }
+    @Test
+    public void testSingleAttackJwKaltz() throws Exception{
+        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/jwkaltz-training.csv");
+        final List<Login> testData = LoginsParser.getTestData("/jwkaltz-singleAttack.csv");
+        analyzer.train(trainingData);
+        final long testCount = testData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         Assert.assertTrue((double) testCount == 1);
     }
 }
