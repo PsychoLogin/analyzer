@@ -15,6 +15,9 @@ public class ConfigurationService {
     @PersistenceContext(unitName = "psylogin")
     EntityManager em;
 
+    /**
+     * @return The current Configuration
+     */
     public StaticAnalyseConfig getConfig() {
         TypedQuery<StaticAnalyseConfig> namedQuery = em.createNamedQuery(StaticAnalyseConfig.GET_CONFIG, StaticAnalyseConfig.class);
         return namedQuery.getSingleResult();

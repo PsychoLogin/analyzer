@@ -19,6 +19,11 @@ public class AlertService {
     EntityManager em;
 
 
+    /**
+     * @param blogUserId Id of the User in the monitored Application
+     * @param producer Name of the class who produces the alert
+     * @param severity Severity of the Alert
+     */
     public void createAlert(long blogUserId, String producer, String severity) {
         Alert alert = new Alert.Builder()
                 .withBlogUserId(blogUserId)

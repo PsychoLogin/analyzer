@@ -1,15 +1,12 @@
 package ch.bfh.projekt1.psyloginanalyzer.analyzer;
 
-import ch.bfh.projekt1.psyloginanalyzer.alert.AlertService;
 import ch.bfh.projekt1.psyloginanalyzer.analyzer.ip.IpAnalyzer;
 import ch.bfh.projekt1.psyloginanalyzer.entity.StaticSessionData;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
@@ -29,10 +26,13 @@ public class UserBehaviorAnalyser {
     IpAnalyzer ipAnalyzer;
 
 
-
+    /**
+     * Analyses the static user data and maps them to a user behavior
+     * @param currentSessionId current session in the monitored appliacation
+     * @param blogUserId current user id of the user in the monitored application
+     * @return
+     */
     public UserBehavior getUserBehavior(long currentSessionId, long blogUserId) {
-
-
         TypedQuery<StaticSessionData> query = em.createNamedQuery(StaticSessionData.GET_OLD_SESSIONS, StaticSessionData.class);
         query.setParameter("blogUserId", blogUserId);
         query.setParameter("currentSessionId", currentSessionId);

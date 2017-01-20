@@ -18,6 +18,10 @@ public class IpAnalyzer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IpAnalyzer.class);
 
+    /**
+     * @param ipString IP to be checked
+     * @return Provider of the IP to be checked
+     */
     public String checkRange(String ipString) {
         try {
             IpHandler handler = new IpHandler();

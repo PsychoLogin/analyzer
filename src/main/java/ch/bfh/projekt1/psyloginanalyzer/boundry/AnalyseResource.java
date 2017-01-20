@@ -38,6 +38,12 @@ public class AnalyseResource {
     private ExecutorService threadpool = Executors.newCachedThreadPool();
     private static final Logger logger = Logger.getLogger(AnalyseResource.class);
 
+
+    /**
+     * Analyses a login of a user
+     * @param loginParameter
+     * @return Asynchronous Response to the Client (Accepted
+     */
     @POST
     public Response analyseLogin(LoginParameter loginParameter) {
         threadpool.execute(() -> staticDataAnalyzer.analyseUser(loginParameter.getCurrentSessionId(), loginParameter.getBlogUserId()));

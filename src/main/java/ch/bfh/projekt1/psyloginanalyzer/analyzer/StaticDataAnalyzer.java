@@ -44,9 +44,9 @@ public class StaticDataAnalyzer {
 
     /**
      *
-     * @param currentUserSessionId
-     * @param blogUserId
-     *      * @return Naive implementation if a user is possibly not the actual User
+     * @param currentUserSessionId Id of the current session in the monitored application
+     * @param blogUserId Id of the User in the monitored application
+     * @return Naive implementation if a user is possibly not the actual User
      * User analyse is invalid if there is less than 20% usage or less than 5 logins happened
      */
 

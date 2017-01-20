@@ -10,6 +10,12 @@ public class IpHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IpHandler.class);
 
+    /**
+     * @param ipString IP Address to be converted
+     * @return The converted IP Address
+     * @throws InvalidIpException if the input Address is not a valid IP Adress
+     * the exceptions gets thorwn
+     */
     public IpAddress convertToIp(String ipString) throws InvalidIpException {
         IpAddress returnAddress = new IpAddress();
         String[] parts = ipString.trim().split("\\.");
