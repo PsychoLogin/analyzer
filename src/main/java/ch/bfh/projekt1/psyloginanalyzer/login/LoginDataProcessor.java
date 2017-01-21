@@ -52,8 +52,8 @@ public class LoginDataProcessor {
                 .orElse(Collections.emptyList()).size();
 
         return loginsPerSession.values().stream()
-                .map(EntityHelper::actionDifference)
                 .filter(a -> a.size() <= min)
+                .map(EntityHelper::actionDifference)
                 .map(EntityHelper::createLogin)
                 .map(login -> new TrainingEntry<>(login, true))
                 .collect(Collectors.toList());
