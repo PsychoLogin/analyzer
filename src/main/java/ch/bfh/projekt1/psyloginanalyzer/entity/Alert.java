@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * Created by Jan on 07.01.2017.
+ * Entity class representing alarms
  */
 @Entity
 @Table(name = "alerts")

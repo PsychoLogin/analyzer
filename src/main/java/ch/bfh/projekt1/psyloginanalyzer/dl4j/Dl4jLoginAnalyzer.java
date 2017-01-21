@@ -38,24 +38,38 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by othma on 27.11.2016.
+ * Neuronal Network class for training and analyzing datasets
  */
-
 public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
     private static final int NUM_CATEGORIES = 2;
     private MultiLayerNetwork network;
     private DataNormalization normalizer;
 
+    /**
+     * Get size of trainingset for training
+     * @param trainingDataSet
+     * @return
+     */
     private int getNumberOfInputFeatures(final Collection<TrainingEntry<Login>> trainingDataSet) {
         return trainingDataSet.iterator().next().getEntity().getKeystrokeTimestamps().size();
     }
 
+    /**
+     * Convert collection of training entries of logins to a trainable dataset
+     * @param trainingDataSet
+     * @return
+     */
     private DataSet toDataSet(final Collection<TrainingEntry<Login>> trainingDataSet) {
         final int numTimestampsDifferences = getNumberOfInputFeatures(trainingDataSet);
         final IterableRecordReader recordReader = new IterableRecordReader(trainingDataSet);
         return new RecordReaderDataSetIterator(recordReader, trainingDataSet.size(), numTimestampsDifferences, NUM_CATEGORIES).next();
     }
 
+    /**
+     * Train neural network with training dataset
+     * @param trainingDataSet
+     * @throws TrainingException
+     */
     public void train(Collection<TrainingEntry<Login>> trainingDataSet) throws TrainingException {
         if (trainingDataSet.isEmpty()) return;
         try {
@@ -102,6 +116,12 @@ public class Dl4jLoginAnalyzer implements ITrainableAnalyzer<Login> {
         }
     }
 
+    /**
+     * Analyze single login for true or false
+     * @param login
+     * @return
+     * @throws AnalysisException
+     */
     public boolean analyze(final Login login) throws AnalysisException {
         try {
             final DataSet testDataSet = toDataSet(Collections.singleton(new TrainingEntry<>(login, false)));

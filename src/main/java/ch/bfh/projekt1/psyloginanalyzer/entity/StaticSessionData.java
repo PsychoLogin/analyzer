@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Created by jan on 03.12.16.
+ * Entity class representing static session data
  */
 
 @NamedQueries(

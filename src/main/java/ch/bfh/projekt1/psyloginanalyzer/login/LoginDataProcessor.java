@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Created by Jan on 06.01.2017.
+ * Login Data Processor for real time analysis
  */
 
 @Stateless
@@ -30,6 +30,12 @@ public class LoginDataProcessor {
     @PersistenceContext(unitName = "psylogin")
     EntityManager em;
 
+    /**
+     * Create trainingset for real time analyse
+     * @param currentSessionId
+     * @param blogUserId
+     * @return
+     */
     public Collection<TrainingEntry<Login>> createTrainSet(long currentSessionId, long blogUserId) {
         TypedQuery<Action> getTrainingData = em.createNamedQuery(Action.GET_TRAINING_DATA, Action.class);
         getTrainingData.setParameter("currentSessionId", currentSessionId);
@@ -53,6 +59,11 @@ public class LoginDataProcessor {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get test trainingset for real time analyse
+     * @param currentSessionId
+     * @return
+     */
     public Login getTestSet(long currentSessionId) {
         TypedQuery<Action> getTrainingData = em.createNamedQuery(Action.GET_TEST_DATA, Action.class);
         getTrainingData.setParameter("currentSessionId", currentSessionId);

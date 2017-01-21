@@ -1,7 +1,7 @@
 package ch.bfh.projekt1.psyloginanalyzer.login;
 
 /**
- * Created by othma on 27.11.2016.
+ * Exception thrown at neural network training
  */
 public class TrainingException extends Exception {
     public TrainingException(final Exception e) {

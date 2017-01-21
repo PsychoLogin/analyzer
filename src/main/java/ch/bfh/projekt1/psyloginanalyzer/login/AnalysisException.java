@@ -3,7 +3,7 @@ package ch.bfh.projekt1.psyloginanalyzer.login;
 import java.io.IOException;
 
 /**
- * Created by othma on 27.11.2016.
+ * Exception thrown in analyze process
  */
 public class AnalysisException extends Exception {
     public AnalysisException(Exception e) {

@@ -6,7 +6,9 @@ import org.datavec.api.writable.Writable;
 import java.util.List;
 
 /**
- * Created by othma on 27.11.2016.
+ * Entity class representing one NN training entry
+ * Training entry consist of a entity (timestamp latencies) to train and a result of NN analyze process
+ * @param <T>
  */
 public class TrainingEntry<T extends IWritableConvertible> implements IWritableConvertible {
     private final T entity;

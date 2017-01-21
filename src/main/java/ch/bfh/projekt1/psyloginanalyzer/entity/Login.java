@@ -7,11 +7,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by othma on 27.11.2016.
+ * Login class represents one user login attempt and holds a list of keystroke timestamp latencies
  */
 public class Login implements IWritableConvertible {
     private final List<Long> keystrokeTimestampDifferences;
 
+    /**
+     * Takes a list of timestamp latencies
+     * @param keystrokeTimestampDifferences
+     */
     public Login(Collection<Long> keystrokeTimestampDifferences) {
         this.keystrokeTimestampDifferences = Collections.unmodifiableList(new ArrayList<>(keystrokeTimestampDifferences));
     }
@@ -20,6 +24,10 @@ public class Login implements IWritableConvertible {
         return keystrokeTimestampDifferences;
     }
 
+    /**
+     * Conversion to NN appropriate entities
+     * @return
+     */
     @Override
     public List<Writable> toWritable() {
         return keystrokeTimestampDifferences.stream().map(LongWritable::new).collect(Collectors.toList());

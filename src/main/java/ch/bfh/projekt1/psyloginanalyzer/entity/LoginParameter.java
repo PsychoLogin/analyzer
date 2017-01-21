@@ -1,7 +1,7 @@
 package ch.bfh.projekt1.psyloginanalyzer.entity;
 
 /**
- * Created by Jan on 06.01.2017.
+ * Entity class for NN analyze at logon
  */
 public class LoginParameter {
     private long currentSessionId;

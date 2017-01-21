@@ -16,17 +16,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @brief
+ * Record Reader class for NN datasets
  *
- * @details
  */
 public class IterableRecordReader extends BaseRecordReader {
     private Iterator<? extends IWritableConvertible> iterator;
 
     /**
-     * @brief
-     *
-     * @details
+     * Constructor takes iterable for NN datasets
      *
      * @param entities
      */

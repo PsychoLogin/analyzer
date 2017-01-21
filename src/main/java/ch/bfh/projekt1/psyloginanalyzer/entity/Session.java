@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by othma on 02.01.2017.
+ * Entity class representing web blog session
  */
 @Entity
 @Table(name = "sessions")

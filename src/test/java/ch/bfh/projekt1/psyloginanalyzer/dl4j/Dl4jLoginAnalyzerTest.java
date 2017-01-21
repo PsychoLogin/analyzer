@@ -1,7 +1,5 @@
 package ch.bfh.projekt1.psyloginanalyzer.dl4j;
 
-import ch.bfh.projekt1.psyloginanalyzer.analyzer.PasswordAnalyzer;
-import ch.bfh.projekt1.psyloginanalyzer.entity.Action;
 import ch.bfh.projekt1.psyloginanalyzer.entity.Login;
 import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import ch.bfh.projekt1.psyloginanalyzer.login.AnalysisException;
@@ -16,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by othma on 27.11.2016.
+ * Test neural network with real world samples
  */
 
 public class Dl4jLoginAnalyzerTest {
@@ -29,7 +27,6 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue(analyzer.analyze(LoginDataSetGenerator.generateLogin(500)));
         Assert.assertFalse(analyzer.analyze(LoginDataSetGenerator.generateLogin(100)));
     }
-
     private static boolean silentAnalyze(final IAnalyzer<Login> analyzer, final Login login) {
         try {
             return analyzer.analyze(login);
@@ -37,7 +34,6 @@ public class Dl4jLoginAnalyzerTest {
             throw new RuntimeException(e);
         }
     }
-
     @Test
     public void testKesso6() throws Exception {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
@@ -51,7 +47,6 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) testCount / testData.size() > 0.9);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.7);
     }
-
     @Test
     public void testgimpel() throws Exception {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/gimpel-training.csv");
@@ -65,7 +60,6 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) testCount / testData.size() > 0.9);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.5);
     }
-
     @Test
     public void testschei2() throws Exception {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/schei2-training.csv");
@@ -79,7 +73,6 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) testCount / testData.size() > 0.7);
         Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
-
     @Test
     public void testpipo() throws Exception {
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/pipo-training.csv");
@@ -107,33 +100,11 @@ public class Dl4jLoginAnalyzerTest {
         Assert.assertTrue((double) attackCount / attackData.size() > 0.9);
     }
     @Test
-    public void testkaltz() throws Exception {
-        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/jwkaltz-training.csv");
-        final List<Login> testData = LoginsParser.getTestData("/jwkaltz-test.csv");
-        final List<Login> attackData = LoginsParser.getTestData("/jwkaltz-attack.csv");
-        analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
-        final long attackCount = attackData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
-        System.err.println("Testdata Kaltz: " + testCount + "/" + testData.size());
-        System.err.println("AttackData Kaltz: " + attackCount + "/" + attackData.size());
-        Assert.assertTrue((double) testCount / testData.size() > 0.7);
-        Assert.assertTrue((double) attackCount / attackData.size() > 0.6);
-    }
-
-    @Test
     public void testsingleLoginkesso6() throws Exception{
         final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/kesso-training.csv");
         final List<Login> testData = LoginsParser.getTestData("/kesso-singleLogin.csv");
         analyzer.train(trainingData);
         final long testCount = testData.stream().filter(t -> silentAnalyze(analyzer, t)).count();
-        Assert.assertTrue((double) testCount == 1);
-    }
-    @Test
-    public void testSingleAttackJwKaltz() throws Exception{
-        final List<TrainingEntry<Login>> trainingData = LoginsParser.getTrainingSet("/jwkaltz-training.csv");
-        final List<Login> testData = LoginsParser.getTestData("/jwkaltz-singleAttack.csv");
-        analyzer.train(trainingData);
-        final long testCount = testData.stream().filter(t -> !silentAnalyze(analyzer, t)).count();
         Assert.assertTrue((double) testCount == 1);
     }
 }

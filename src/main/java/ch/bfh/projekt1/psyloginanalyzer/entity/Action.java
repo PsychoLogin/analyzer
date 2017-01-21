@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * Created by othma on 02.01.2017.
+ * Entity class representing actions (keystroke)
  */
 
 @NamedQueries(

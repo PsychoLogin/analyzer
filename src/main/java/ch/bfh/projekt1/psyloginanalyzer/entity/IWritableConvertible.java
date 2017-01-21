@@ -5,13 +5,8 @@ import org.datavec.api.writable.Writable;
 import java.util.List;
 
 /**
- * Created by othma on 10.12.2016.
+ * Interface for nn entities and datasets
  */
 public interface IWritableConvertible {
-    /**
-     * @brief
-     *
-     * @return
-     */
     List<Writable> toWritable();
 }

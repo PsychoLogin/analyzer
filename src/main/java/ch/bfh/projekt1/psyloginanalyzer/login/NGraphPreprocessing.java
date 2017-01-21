@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Created by othma on 03.01.2017.
+ * N-Graph preprocessing for nn result optimization
  */
 public class NGraphPreprocessing implements Function<Login, Login> {
     final int n;

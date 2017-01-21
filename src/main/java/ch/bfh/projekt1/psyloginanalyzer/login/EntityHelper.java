@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by othma on 02.01.2017.
+ * Helper class to transform timestamp latencies and logins
  */
 public final class EntityHelper {
     private EntityHelper() {
@@ -33,15 +33,29 @@ public final class EntityHelper {
         return result;
     }
 
+    /**
+     * Transform list of actions to latencies
+     * @param keystrokeTimestamps
+     * @return
+     */
     public static List<Long> actionDifference(final List<Action> keystrokeTimestamps) {
         return differences(keystrokeTimestamps.stream().map(a -> a.getTimestamp()).collect(Collectors.toList()));
     }
 
-
+    /**
+     * Create new login from timestamp latencies
+     * @param keystrokeTimestamps
+     * @return
+     */
     public static Login newLogin(final List<Date> keystrokeTimestamps) {
         return createLogin(differences(keystrokeTimestamps));
     }
 
+    /**
+     * Create n-graph logins (preprocessing)
+     * @param keystrokeTimestampDifferences
+     * @return
+     */
     public static Login createLogin(final List<Long> keystrokeTimestampDifferences) {
         return new NGraphPreprocessing(4).apply(new Login(keystrokeTimestampDifferences));
     }

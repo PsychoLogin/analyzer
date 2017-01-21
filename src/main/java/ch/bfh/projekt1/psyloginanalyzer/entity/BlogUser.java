@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 /**
- * Created by othma on 02.01.2017.
+ * Entity class representing blog users
  */
 @Entity
 @Table(name = "blog_users")

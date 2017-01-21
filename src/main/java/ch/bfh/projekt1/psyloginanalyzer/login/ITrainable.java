@@ -6,7 +6,8 @@ import ch.bfh.projekt1.psyloginanalyzer.entity.TrainingEntry;
 import java.util.Collection;
 
 /**
- * Created by othma on 27.11.2016.
+ * NN trainable interface
+ * @param <Entity>
  */
 public interface ITrainable<Entity extends IWritableConvertible> {
     void train(Collection<TrainingEntry<Entity>> trainingDataSet) throws TrainingException;
