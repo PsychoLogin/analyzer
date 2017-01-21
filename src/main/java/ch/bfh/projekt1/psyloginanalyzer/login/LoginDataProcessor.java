@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Login Data Processor for real time analysis
@@ -51,12 +52,13 @@ public class LoginDataProcessor {
                 .min(Comparator.comparingInt(List::size))
                 .orElse(Collections.emptyList()).size();
 
-        return loginsPerSession.values().stream()
+        List<List<Long>> validLogins = loginsPerSession.values().stream()
                 .filter(a -> a.size() <= min)
                 .map(EntityHelper::actionDifference)
-                .map(EntityHelper::createLogin)
-                .map(login -> new TrainingEntry<>(login, true))
                 .collect(Collectors.toList());
+
+        return SampleGenerator.generate(validLogins);
+
     }
 
     /**
